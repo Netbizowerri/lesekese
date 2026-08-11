@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-size: 17.5px;
+  }
+
+  :root {
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-accent: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    background-color: #f8fafc;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-accent {
+    font-family: var(--font-accent);
+  }
+}
+
+/* ============ Light Glassmorphism Classes ============ */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(220, 38, 38, 0.45);
+  box-shadow: 0 25px 60px rgba(220, 38, 38, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: #0f172a;
+}
+
+.glass-input::placeholder {
+  color: #64748b;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+/* Custom Fire Flame Glow Effects */
+@keyframes firePulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+.fire-glow {
+  animation: firePulse 6s ease-in-out infinite;
+}
+
+/* ============ Tiny Bug Background Pattern (4% opacity) ============ */
+.bg-bug-pattern {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNDAiIGhlaWdodD0iMjQwIiB2aWV3Qm94PSIwIDAgMjQwIDI0MCI+CiAgPGRlZnM+CiAgICA8ZyBpZD0iYnVnIj4KICAgICAgPHBhdGggZD0iTS0xMyAtNSBDLTE3IC05IC0yMCAtOSAtMjIgLTEyIiBzdHJva2U9IiMwZjE3MmEiIHN0cm9rZS13aWR0aD0iMS40IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgICAgPHBhdGggZD0iTS0xMiAtMiBDLTE2IC01IC0xOCAtNCAtMjEgLTUiIHN0cm9rZT0iIzBmMTcyYSIgc3Ryb2tlLXdpZHRoPSIxLjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgICA8Y2lyY2xlIGN4PSItMTEiIGN5PSItMi41IiByPSIzIiBmaWxsPSIjMGYxNzJhIiBzdHJva2U9Im5vbmUiLz4KICAgICAgPHBhdGggZD0iTS0zIC01IEwtNiAtMTEiIHN0cm9rZT0iIzBmMTcyYSIgc3Ryb2tlLXdpZHRoPSIxLjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgICA8cGF0aCBkPSJNMiAtNS41IEwxIC0xMiIgc3Ryb2tlPSIjMGYxNzJhIiBzdHJva2Utd2lkdGg9IjEuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICAgIDxwYXRoIGQ9Ik03IC01IEw5IC0xMSIgc3Ryb2tlPSIjMGYxNzJhIiBzdHJva2Utd2lkdGg9IjEuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICAgIDxwYXRoIGQ9Ik0tMyA1IEwtNiAxMSIgc3Ryb2tlPSIjMGYxNzJhIiBzdHJva2Utd2lkdGg9IjEuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICAgIDxwYXRoIGQ9Ik0yIDUuNSBMMSAxMiIgc3Ryb2tlPSIjMGYxNzJhIiBzdHJva2Utd2lkdGg9IjEuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICAgIDxwYXRoIGQ9Ik03IDUgTDkgMTEiIHN0cm9rZT0iIzBmMTcyYSIgc3Ryb2tlLXdpZHRoPSIxLjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgICA8ZWxsaXBzZSBjeD0iMiIgY3k9IjAiIHJ4PSIxMCIgcnk9IjUuNSIgZmlsbD0iIzBmMTcyYSIgc3Ryb2tlPSJub25lIi8+CiAgICAgIDxwYXRoIGQ9Ik0tMSAtNS41IEMtNiAtMTAgMyAtMTAgMCAtNS41IFoiIHN0cm9rZT0iIzBmMTcyYSIgc3Ryb2tlLXdpZHRoPSIwLjkiIGZpbGw9Im5vbmUiLz4KICAgIDwvZz4KICA8L2RlZnM+CiAgPGcgZmlsbD0iIzBmMTcyYSIgc3Ryb2tlPSIjMGYxNzJhIiBvcGFjaXR5PSIwLjA0Ij4KICAgIDx1c2UgaHJlZj0iI2J1ZyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTYgNTgpIHJvdGF0ZSgtMTQpIi8+CiAgICA8dXNlIGhyZWY9IiNidWciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4OCAxNTIpIHJvdGF0ZSgxNjYpIHNjYWxlKDEuMjUpIi8+CiAgICA8dXNlIGhyZWY9IiNidWciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5NiAzMCkgcm90YXRlKDgyKSBzY2FsZSgwLjc4KSIvPgogICAgPHVzZSBocmVmPSIjYnVnIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTggMTk2KSByb3RhdGUoLTM4KSBzY2FsZSgxLjA1KSIvPgogICAgPHVzZSBocmVmPSIjYnVnIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMCAxOTApIHJvdGF0ZSgxNDUpIHNjYWxlKDAuODUpIi8+CiAgPC9nPgo8L3N2Zz4K");
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
+}
+
+/* Mobile: scale up all rem-based font sizes sitewide */
+@media (max-width: 767px) {
+  html {
+    font-size: 19px;
+  }
+}

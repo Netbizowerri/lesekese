@@ -1,0 +1,29 @@
+# LESEKESE SPA — cPanel / Apache fallback
+# Routes every request that isn't a real file/folder to index.html
+# so browser-router paths (e.g. /products) survive hard refreshes.
+# Upload the contents of /dist (including this file) into public_html.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Exclude real files (assets, images, favicons)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything else -> index.html (SPA fallback)
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Basic hardening headers
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Served files: gzip compression if available
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>

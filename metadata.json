@@ -1,0 +1,6 @@
+{
+  "name": "LESEKESE Instant Killer",
+  "description": "LESEKESE Bedbugs & Cockroaches Instant Killer - Bespoke web app with distributor locator, product showcase, and inquiry portal.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
