@@ -15,7 +15,7 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
       whileHover={{ y: -8 }}
       transition={{ type: 'spring', stiffness: 200, damping: 20 }}
       className={`relative glass-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between overflow-hidden ${
-        product.popular ? 'border-2 border-red-500/60 shadow-2xl shadow-red-600/20' : ''
+        product.popular ? 'border-2 border-brand shadow-2xl shadow-red-600/20' : ''
       }`}
     >
       {/* Popular Badge */}
@@ -28,7 +28,7 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
 
       <div>
         {/* Product Image Showcase */}
-        <div className="relative w-full h-48 sm:h-52 mb-5 flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-slate-100 via-slate-50 to-white p-3 border border-slate-200 group-hover:border-red-500/40 transition-all">
+        <div className="relative w-full h-48 sm:h-52 mb-5 flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-slate-100 via-slate-50 to-white p-3 border border-brand group-hover:border-brand transition-all">
           <img
             src={product.image}
             alt={product.name}
@@ -40,12 +40,9 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
           </div>
         </div>
 
-        {/* Header Title & Size */}
+        {/* Header Title */}
         <div className="mb-4">
-          <span className="text-sm font-accent font-bold uppercase tracking-widest text-red-600">
-            {product.sizeLabel}
-          </span>
-          <h3 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-wide mt-1">
+          <h3 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-wide">
             {product.name}
           </h3>
         </div>

@@ -28,7 +28,7 @@ export function ProductsPage({ onNavigate, onOpenOrderModal }: ProductsPageProps
     <div className="space-y-16 pt-28 sm:pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-2xl">
+      <section className="relative overflow-hidden rounded-3xl border border-brand shadow-2xl">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('https://i.ibb.co/j9VDxGwf/Lesekese-banners-5.jpg')" }}

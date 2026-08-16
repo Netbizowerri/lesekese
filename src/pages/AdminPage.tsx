@@ -16,7 +16,7 @@ export function AdminPage({ onNavigate }: AdminPageProps) {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (adminKey === 'admin' || adminKey === 'lesekese2026' || adminKey.length > 0) {
+    if (adminKey === 'lesekese2026') {
       setAuthenticated(true);
     }
   };
@@ -63,7 +63,7 @@ export function AdminPage({ onNavigate }: AdminPageProps) {
                 required
                 value={adminKey}
                 onChange={(e) => setAdminKey(e.target.value)}
-                placeholder="Enter admin password (e.g. lesekese2026)"
+                placeholder="Enter admin passkey"
                 className="w-full px-4 py-3 rounded-xl glass-input text-xs font-medium"
               />
             </div>

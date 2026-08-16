@@ -1,0 +1,31 @@
+# LESEKESE Products — robots.txt
+# https://www.lesekeseproducts.com
+
+# Allow all AI search crawlers (GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# Block AI training-only crawlers
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+# Standard crawlers
+User-agent: *
+Allow: /
+
+Sitemap: https://www.lesekeseproducts.com/sitemap.xml

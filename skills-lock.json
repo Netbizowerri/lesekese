@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "skills": {
+    "adversarial-audit": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/adversarial-audit/SKILL.md",
+      "computedHash": "c5c856c8e5c5c1b63cd45ba37f25bfc830bfb91e7b0812187eb95a438720ad22"
+    },
+    "authentication-failures": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/authentication-failures/SKILL.md",
+      "computedHash": "e5e2a4ea8691bc832d6570ccdebadc8b8754900b47340759919080b73ed7ad2f"
+    },
+    "broken-access-control": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/broken-access-control/SKILL.md",
+      "computedHash": "3587933ad2957c18e5f6a676861494af31343358bec79747f63c48c584ee00ce"
+    },
+    "cryptographic-failures": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cryptographic-failures/SKILL.md",
+      "computedHash": "c935420a54ea784bfde7f598a4742572f8ef5f669ddae7db0399dd8a0ac73eea"
+    },
+    "desktop-workflow-generator": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/desktop-workflow-generator/SKILL.md",
+      "computedHash": "a7857d990a4f4f2cafe6a621c52ae14b7879ab266b67f0eaeab3bc03c72149de"
+    },
+    "desktop-workflow-to-playwright": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/desktop-workflow-to-playwright/SKILL.md",
+      "computedHash": "e6d26295f72688705eb09e4d45286d2381a0b6738d32f5be6f487cdf3c5106a1"
+    },
+    "injection": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/injection/SKILL.md",
+      "computedHash": "9c808ba6ffeff1ec090455f05703812bc63a139f71ee969525841d631588cf38"
+    },
+    "insecure-design": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/insecure-design/SKILL.md",
+      "computedHash": "d8d22830b63bee2fa70840fb7aea2f03d36b57ebad7c5b5f96e398bda0f0974d"
+    },
+    "keyword-wedge": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/keyword-wedge/SKILL.md",
+      "computedHash": "d568f43f93db9bb8d3bb611375bc95f8f6e66b911bb58f7e981fa1feba4bd00f"
+    },
+    "mishandling-exceptional-conditions": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/mishandling-exceptional-conditions/SKILL.md",
+      "computedHash": "02f12d036c02409f66c548435a9a68aaaf6d5e14a969365924218f940d754713"
+    },
+    "mobile-workflow-generator": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/mobile-workflow-generator/SKILL.md",
+      "computedHash": "938cdfa9f6f42f72ec8a2d3fe925b267339e8774daab8197c12c5c343aba4da2"
+    },
+    "mobile-workflow-to-playwright": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/mobile-workflow-to-playwright/SKILL.md",
+      "computedHash": "fdbe0bde28f2548ecb8dd7f1faddbce7176c976530e44470024e823beb2a1855"
+    },
+    "multi-user-workflow-generator": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/multi-user-workflow-generator/SKILL.md",
+      "computedHash": "68e7cbc076acdbad00dddf88d1593151677644ced4717a632c31235534639305"
+    },
+    "multi-user-workflow-to-playwright": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/multi-user-workflow-to-playwright/SKILL.md",
+      "computedHash": "0ec99fd45121a030fb41ed0c7286a9a8529a7c436019b4c287e722c835f7887c"
+    },
+    "playwright-runner": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/playwright-runner/SKILL.md",
+      "computedHash": "68c5963cdd4e8fe3991e02ba5ec4be3737837748ee057484f53f11f6e142bd10"
+    },
+    "resilience-audit": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/resilience-audit/SKILL.md",
+      "computedHash": "9ed38c14af27291d09bdf1ae88ccabf7f0b31259c03a44b498174e2496c1889a"
+    },
+    "review-learnings": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/review-learnings/SKILL.md",
+      "computedHash": "2b28e4fbd646277bfd789969b3d7d082cc921046339c665a22c124320c5384a6"
+    },
+    "security-logging-alerting-failures": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/security-logging-alerting-failures/SKILL.md",
+      "computedHash": "e6ce8ea0936398d73de32f56eb232997f63aed195b72f57458af52ffd92a206b"
+    },
+    "security-misconfiguration": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/security-misconfiguration/SKILL.md",
+      "computedHash": "6124d9571060992f1bb42338c1d9f1de08f42ebd16b179b13e30a9042ac518fe"
+    },
+    "software-data-integrity-failures": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/software-data-integrity-failures/SKILL.md",
+      "computedHash": "3e094834c6e9268a4d5c44040c0b707e3adc1cf93675261633565caa3ad17b10"
+    },
+    "software-supply-chain-failures": {
+      "source": "scholarly360/owasp-top10-web-skills",
+      "sourceType": "github",
+      "skillPath": "skills/software-supply-chain-failures/SKILL.md",
+      "computedHash": "70cf49fd686f864f0cc465d3661f047e03ab86639f9edae105b51acaaf9f8fa9"
+    },
+    "submit-learnings": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/submit-learnings/SKILL.md",
+      "computedHash": "1a652ddb391d9138c1fb00e21bd723d4e39fe4f4520990c8d404937ebbdb4373"
+    },
+    "trust-builder": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/trust-builder/SKILL.md",
+      "computedHash": "a1d991ddad4d0a2c96944b34d16531f913633562f8b2ce75e3dafc87be453ef3"
+    },
+    "use-profiles": {
+      "source": "neonwatty/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/use-profiles/SKILL.md",
+      "computedHash": "922405ceed48b0e390512218301bab9e5b2aa97e561a9d5f638885aee056f2c2"
+    }
+  }
+}

@@ -82,8 +82,8 @@ export function MapLocator({ onSelectStoreForOrder }: MapLocatorProps) {
                   onClick={() => setSelectedStore(loc)}
                   className={`p-5 rounded-2xl cursor-pointer transition-all ${
                     isSelected
-                      ? 'glass-card border-2 border-red-500/80 bg-red-50 shadow-xl shadow-red-600/10'
-                      : 'glass-card border border-slate-200 hover:border-slate-300'
+                      ? 'glass-card border-2 border-brand bg-red-50 shadow-xl shadow-red-600/10'
+                      : 'glass-card border border-slate-200 hover:border-brand'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">

@@ -4,7 +4,6 @@ import { Flame, ShieldCheck, Zap, ArrowRight, Award, CheckCircle2, MapPin, Phone
 import { PRODUCTS, LOCATIONS } from '../data/mockData';
 import { ProductBottleGraphic } from '../components/ProductBottleGraphic';
 import { ProductCard } from '../components/ProductCard';
-import { PestCalculator } from '../components/PestCalculator';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
@@ -96,7 +95,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
               </div>
 
               {/* Main Display Headline */}
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-display font-bold text-slate-900 tracking-tight leading-[0.95]">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-slate-900 tracking-tight leading-[0.95]">
                 HOTTER THAN FIRE.<br />
                 <span className="bg-gradient-to-r from-red-500 via-amber-400 to-red-600 bg-clip-text text-transparent">
                   TOUGHER THAN PESTS.
@@ -153,28 +152,28 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="glass-card p-8 rounded-3xl border border-red-500/20 bg-gradient-to-r from-white via-slate-50 to-red-50 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
           <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-wider">
+            <div className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-wider">
               350,000+
             </div>
             <p className="text-xs text-red-600 font-accent uppercase font-bold">Bottles Distributed</p>
           </div>
 
           <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-wider">
+            <div className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-wider">
               99.4%
             </div>
             <p className="text-xs text-red-600 font-accent uppercase font-bold">Pest Knockdown Rate</p>
           </div>
 
           <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-wider">
+            <div className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-wider">
               2,400+
             </div>
             <p className="text-xs text-red-600 font-accent uppercase font-bold">Retail Partners in Nigeria</p>
           </div>
 
           <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-wider">
+            <div className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-wider">
               3+ DAYS
             </div>
             <p className="text-xs text-red-600 font-accent uppercase font-bold">Active Residual Barrier</p>
@@ -189,7 +188,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             <Flame className="w-3.5 h-3.5 text-red-500" />
             <span>Product Catalog</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-display font-bold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
             AVAILABLE IN THREE CONVENIENT SIZES
           </h2>
           <p className="text-sm text-slate-500">
@@ -216,14 +215,14 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Product Highlights</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-tight">
             THE POWER OF LESEKESE IN ACTION
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {/* Banner 1 */}
-          <div className="group relative rounded-3xl overflow-hidden border border-slate-200 bg-white/90 shadow-2xl hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between">
+          <div className="group relative rounded-3xl overflow-hidden border border-brand bg-white/90 shadow-2xl hover:border-brand transition-all duration-300 flex flex-col justify-between">
             <div className="w-full relative overflow-hidden bg-slate-100 flex items-center justify-center">
               <img
                 src="https://i.ibb.co/gFtmPNLB/Lesekese-banners-1.jpg"
@@ -245,7 +244,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
           </div>
 
           {/* Banner 2 */}
-          <div className="group relative rounded-3xl overflow-hidden border border-slate-200 bg-white/90 shadow-2xl hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between">
+          <div className="group relative rounded-3xl overflow-hidden border border-brand bg-white/90 shadow-2xl hover:border-brand transition-all duration-300 flex flex-col justify-between">
             <div className="w-full relative overflow-hidden bg-slate-100 flex items-center justify-center">
               <img
                 src="https://i.ibb.co/kWsG7Lt/Lesekese-banners.jpg"
@@ -270,11 +269,11 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
 
       {/* ================= DISTRIBUTOR & STORE LOCATOR SECTION ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl border border-amber-500/40 bg-gradient-to-br from-white via-slate-50 to-red-50 overflow-hidden shadow-2xl p-6 sm:p-10 lg:p-12">
+        <div className="relative rounded-3xl border border-brand bg-gradient-to-br from-white via-slate-50 to-red-50 overflow-hidden shadow-2xl p-6 sm:p-10 lg:p-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             {/* Image Showcase */}
-            <div className="lg:col-span-5 relative group rounded-2xl overflow-hidden border border-slate-200 shadow-xl">
+            <div className="lg:col-span-5 relative group rounded-2xl overflow-hidden border border-brand shadow-xl">
               <img
                 src="https://i.ibb.co/9m1PXhGw/Lesekese-1.jpg"
                 alt="LESEKESE Distributor Products"
@@ -295,7 +294,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
                   <Users className="w-3.5 h-3.5 text-amber-500" />
                   <span>Authorized Distributors Across Nigeria</span>
                 </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-slate-900 tracking-tight leading-tight">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-slate-900 tracking-tight leading-tight">
                   BECOME A DISTRIBUTOR OR FIND A STORE NEAR YOU
                 </h2>
                 <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -338,11 +337,6 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
         </div>
       </section>
 
-      {/* ================= INTERACTIVE COVERAGE ESTIMATOR ================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <PestCalculator onOrderRecommended={(size, qty) => onOpenOrderModal(size)} />
-      </section>
-
       {/* ================= HOW IT WORKS MECHANISM ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-3 max-w-2xl mx-auto">
@@ -350,7 +344,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             <Zap className="w-3.5 h-3.5 text-amber-500" />
             <span>Fast Action Mechanism</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-display font-bold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
             WHY LESEKESE OUTPERFORMS REGULAR SPRAYS
           </h2>
         </div>
@@ -406,7 +400,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
           {/* Image (shown in full, not cropped) */}
           <div className="relative bg-slate-100 flex items-center justify-center">
             <img
-              src="https://i.ibb.co/Txr5kzNJ/Lesekese-banners-3.jpg"
+              src="https://i.ibb.co/gbH2yzrP/Lesekese-banners-3.jpg"
               alt="Join the LESEKESE family and earn as a distributor"
               loading="lazy"
               className="w-full h-auto object-contain p-4 sm:p-8"
@@ -485,7 +479,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
             <span>Customer Testimonials</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-display font-bold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
             TRUSTED BY HOMEOWNERS & HOTELS ACROSS NIGERIA
           </h2>
         </div>
@@ -530,7 +524,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative glass-card rounded-3xl border border-red-500/60 bg-gradient-to-br from-white via-red-50 to-amber-50 overflow-hidden grid grid-cols-1 lg:grid-cols-2 items-center">
           <div className="p-10 md:p-16 space-y-4 text-center lg:text-left">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-slate-900 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-slate-900 tracking-tight">
               SAY GOODBYE TO BEDBUGS & COCKROACHES TODAY
             </h2>
             <p className="text-sm sm:text-base text-slate-600">
@@ -555,7 +549,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
 
           <div className="relative bg-slate-100 flex items-center justify-center min-h-[240px] lg:min-h-full">
             <img
-              src="https://i.ibb.co/rRqDnG7h/Lesekese-banners-2.jpg"
+              src="https://i.ibb.co/tpCFTmL0/Lesekese-banners-6.jpg"
               alt="LESEKESE instant killer spray for bedbugs and cockroaches"
               loading="lazy"
               className="w-full h-auto object-contain p-4 sm:p-8"

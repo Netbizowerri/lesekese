@@ -11,7 +11,7 @@ export function LocationsPage({ onNavigate, onOpenOrderModal }: LocationsPagePro
     <div className="space-y-12 pt-28 sm:pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-2xl">
+      <section className="relative overflow-hidden rounded-3xl border border-brand shadow-2xl">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('https://i.ibb.co/j9VDxGwf/Lesekese-banners-5.jpg')" }}
@@ -32,7 +32,7 @@ export function LocationsPage({ onNavigate, onOpenOrderModal }: LocationsPagePro
       </section>
 
       {/* ================= PRIMARY DEPOT FEATURE CARD ================= */}
-      <div className="rounded-3xl border border-red-500/60 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-2xl shadow-red-600/30 p-8">
+      <div className="rounded-3xl border border-brand bg-gradient-to-r from-red-600 via-red-500 to-amber-500 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-2xl shadow-red-600/30 p-8">
         <div className="lg:col-span-8 space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-white text-[11px] font-accent font-bold uppercase tracking-wider shadow-md backdrop-blur-sm">
             <Flame className="w-3.5 h-3.5" /> Primary Market Headquarters

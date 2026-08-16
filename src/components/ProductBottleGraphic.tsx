@@ -31,7 +31,7 @@ export function ProductBottleGraphic({ sizeMl = null, interactive = true }: Prod
         className="relative group cursor-pointer flex flex-col items-center w-full max-w-xs sm:max-w-md"
       >
         {/* Glassmorphism Bottle Aura Card */}
-        <div className="relative p-3 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl glass-card border border-slate-200 shadow-2xl backdrop-blur-2xl flex flex-col items-center w-full transition-all duration-300 group-hover:border-red-500/50 group-hover:shadow-red-500/30">
+        <div className="relative p-3 sm:p-5 lg:p-6 rounded-2xl sm:rounded-3xl glass-card border border-brand shadow-2xl backdrop-blur-2xl flex flex-col items-center w-full transition-all duration-300 group-hover:border-brand group-hover:shadow-red-500/30">
           
           {/* Top Badge */}
           <div className="absolute -top-3 px-3 py-0.5 sm:px-3.5 sm:py-1 bg-gradient-to-r from-red-600 to-amber-500 rounded-full text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-lg z-10">

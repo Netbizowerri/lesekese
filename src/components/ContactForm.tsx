@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ContactFormData } from '../types';
 import { LOCATIONS } from '../data/mockData';
-import { Send, CheckCircle2, AlertCircle, Loader2, Phone, Mail, MapPin, Clock, ShieldCheck, Flame } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { Send, AlertCircle, Loader2, Phone, Mail, MapPin, Clock, ShieldCheck, Flame } from 'lucide-react';
+import { ThankYouModal } from './ThankYouModal';
 
 interface ContactFormProps {
   initialInquiryType?: ContactFormData['inquiryType'];
@@ -33,7 +33,7 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
 
     try {
       // 1. Submit to Formspree endpoint (Formspree or fallback handler)
-      const formspreeEndpoint = (import.meta as any).env?.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xbjnqzzq';
+      const formspreeEndpoint = (import.meta as any).env?.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/mrpzqnyz';
 
       const response = await fetch(formspreeEndpoint, {
         method: 'POST',
@@ -75,17 +75,6 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
 
       setLoading(false);
       setSubmitted(true);
-      
-      // Trigger celebrate confetti
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      } catch (err) {
-        // ignore if canvas unavailable
-      }
 
       if (onSuccessSubmitted) {
         onSuccessSubmitted();
@@ -96,6 +85,20 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
       // Even if formspree fails due to missing key, display friendly success confirmation for user demo
       setSubmitted(true);
     }
+  };
+
+  const resetForm = () => {
+    setSubmitted(false);
+    setFormData({
+      fullName: '',
+      email: '',
+      phone: '',
+      inquiryType: 'General Question',
+      preferredLocation: 'Abule Egba Main Depot (Primary Market HQ)',
+      quantityRequested: '1 Carton (24 Bottles)',
+      message: '',
+      newsletterOptIn: true
+    });
   };
 
   return (
@@ -173,69 +176,38 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
 
       {/* Main Interactive Form */}
       <div className="lg:col-span-7 glass-card p-6 md:p-8 rounded-3xl border border-slate-200 shadow-2xl">
-        {submitted ? (
-          <div className="py-12 text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 mx-auto flex items-center justify-center shadow-lg">
-              <CheckCircle2 className="w-10 h-10" />
-            </div>
-            <h3 className="text-3xl font-display font-bold text-slate-900 tracking-wide">
-              Inquiry Received Successfully!
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <h3 className="text-2xl font-display font-bold text-slate-900 tracking-wide">
+              Send Order or Partnership Request
             </h3>
-            <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-              Thank you, <strong className="text-slate-900">{formData.fullName}</strong>. Our dispatch team has received your <strong className="text-amber-600">{formData.inquiryType}</strong> submission and will reach out to you at <strong className="text-slate-900">{formData.phone}</strong> shortly.
+            <p className="text-xs text-slate-500">
+              Processed instantly via our Formspree & Privyr lead distribution system
             </p>
-            <button
-              onClick={() => {
-                setSubmitted(false);
-                setFormData({
-                  fullName: '',
-                  email: '',
-                  phone: '',
-                  inquiryType: 'General Question',
-                  preferredLocation: 'Abule Egba Main Depot (Primary Market HQ)',
-                  quantityRequested: '1 Carton (24 Bottles)',
-                  message: '',
-                  newsletterOptIn: true
-                });
-              }}
-              className="mt-4 px-6 py-2.5 rounded-xl glass-pill text-xs font-bold text-amber-700 hover:border-amber-500 transition-all cursor-pointer"
-            >
-              Submit Another Request
-            </button>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <h3 className="text-2xl font-display font-bold text-slate-900 tracking-wide">
-                Send Order or Partnership Request
-              </h3>
-              <p className="text-xs text-slate-500">
-                Processed instantly via our Formspree & Privyr lead distribution system
-              </p>
-            </div>
 
-            {/* Inquiry Type Tabs */}
-            <div>
-              <label className="block text-xs font-accent font-bold uppercase text-slate-700 mb-2">
-                Inquiry Type
-              </label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {(['Bulk Order', 'Retailer Inquiry', 'Distributor Application', 'General Question', 'Report Issue'] as const).map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => setFormData({ ...formData, inquiryType: type })}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      formData.inquiryType === type
-                        ? 'bg-red-600 text-white shadow-md shadow-red-600/30 border border-red-400'
-                        : 'glass-pill text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
+          {/* Inquiry Type Tabs */}
+          <div>
+            <label className="block text-xs font-accent font-bold uppercase text-slate-700 mb-2">
+              Inquiry Type
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {(['Bulk Order', 'Retailer Inquiry', 'Distributor Application', 'General Question', 'Report Issue'] as const).map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, inquiryType: type })}
+                  className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    formData.inquiryType === type
+                      ? 'bg-red-600 text-white shadow-md shadow-red-600/30 border border-red-400'
+                      : 'glass-pill text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  {type}
+                </button>
+              ))}
             </div>
+          </div>
 
             {/* Name & Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -354,9 +326,16 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
               )}
             </button>
           </form>
-        )}
       </div>
 
+      {/* Thank You Popout on successful submission */}
+      <ThankYouModal
+        isOpen={submitted}
+        fullName={formData.fullName}
+        phone={formData.phone}
+        inquiryType={formData.inquiryType}
+        onClose={resetForm}
+      />
     </div>
   );
 }
