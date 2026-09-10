@@ -7,6 +7,7 @@ import {
   ChevronDown,
   Phone,
   MessageCircle,
+  MessageSquare,
   ShieldCheck,
   Zap,
   Clock,
@@ -244,6 +245,9 @@ export function LandingPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [formError, setFormError] = useState('');
+  const [smsSending, setSmsSending] = useState(false);
+  const [smsSent, setSmsSent] = useState(false);
+  const [smsError, setSmsError] = useState('');
   const orderRef = useRef<HTMLDivElement>(null);
   const { h, m, s } = useCountdown();
 
@@ -276,6 +280,51 @@ export function LandingPage() {
     }
     setFormError('');
     window.open(buildOrderWaLink(), '_blank', 'noopener,noreferrer');
+  };
+
+  const buildSmsContent = () => {
+    const pkg = selectedPackage;
+    return (
+      `NEW ORDER — ${PRODUCT_NAME}\n\n` +
+      `Package: ${pkg.label} Pack (${pkg.qty} bottle${pkg.qty > 1 ? 's' : ''} × 500ml)\n` +
+      `Price: ₦${pkg.price.toLocaleString()}\n\n` +
+      `Full Name: ${fullName.trim()}\n` +
+      `Phone Number: ${phoneNumber.trim()}\n` +
+      `Delivery Address: ${deliveryAddress.trim()}\n\n` +
+      `Please confirm my order and delivery details.`
+    );
+  };
+
+  const handleSendSms = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!fullName.trim() || !phoneNumber.trim() || !deliveryAddress.trim()) {
+      setFormError('Please fill in your full name, phone number and delivery address.');
+      return;
+    }
+    setFormError('');
+    setSmsSending(true);
+    setSmsSent(false);
+    setSmsError('');
+    try {
+      const res = await fetch('/send-sms.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: '+2348023725740',
+          content: buildSmsContent(),
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.status === 'success') {
+        setSmsSent(true);
+      } else {
+        setSmsError(data.message || 'SMS failed. Please try WhatsApp or call us instead.');
+      }
+    } catch {
+      setSmsError('Network error. Please try WhatsApp or call us instead.');
+    } finally {
+      setSmsSending(false);
+    }
   };
 
   return (
@@ -993,6 +1042,27 @@ export function LandingPage() {
                     <MessageCircle className="w-5 h-5" />
                     Send Order via WhatsApp
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={handleSendSms}
+                    disabled={smsSending}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-black text-base px-6 py-4 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer mt-3"
+                  >
+                    <MessageSquare className="w-5 h-5" />
+                    {smsSending ? 'Sending SMS...' : 'Order via SMS'}
+                  </button>
+
+                  {smsSent && (
+                    <p className="text-green-400 text-sm font-semibold mt-2" role="status">
+                      Order sent via SMS! We&apos;ll call you to confirm delivery.
+                    </p>
+                  )}
+                  {smsError && (
+                    <p className="text-red-400 text-sm font-semibold mt-2" role="alert">
+                      {smsError}
+                    </p>
+                  )}
                   <p className="text-slate-500 text-xs mt-2">
                     Selected:{' '}
                     <strong className="text-white">
