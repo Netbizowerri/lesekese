@@ -468,12 +468,22 @@ export function LandingPage() {
                 </div>
               </FadeIn>
               <FadeIn delay={0.22}>
-                <button
-                  onClick={scrollToOrder}
-                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white font-black text-lg px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all duration-200 hover:scale-[1.03] active:scale-95 fire-glow"
-                >
-                  <MessageCircle className="w-5 h-5" /> ORDER VIA WHATSAPP NOW →
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={buildWaLink(PACKAGES[1])}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white font-black text-sm px-6 py-3 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.3)] transition-all duration-200 hover:scale-[1.03] active:scale-95"
+                  >
+                    <MessageCircle className="w-4 h-4" /> Order on WhatsApp
+                  </a>
+                  <a
+                    href={`sms:+2348023725740?body=${encodeURIComponent(`Hi! I want to order ${PRODUCT_NAME}. Please confirm availability and delivery details.`)}`}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-black text-sm px-6 py-3 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all duration-200 hover:scale-[1.03] active:scale-95"
+                  >
+                    <MessageSquare className="w-4 h-4" /> Order via SMS
+                  </a>
+                </div>
                 <p className="text-xs text-slate-500 mt-2 ml-1">⚡ Fast Delivery · Pay on Delivery Available in Lagos</p>
               </FadeIn>
             </div>
