@@ -410,6 +410,10 @@ export function LandingPage() {
                   src={HERO_IMG}
                   alt={`${PRODUCT_NAME} 500ml bottles`}
                   className="relative w-full max-w-xs md:max-w-sm mx-auto drop-shadow-2xl"
+                  fetchPriority="high"
+                  decoding="async"
+                  width={800}
+                  height={800}
                 />
               </div>
             </FadeIn>
