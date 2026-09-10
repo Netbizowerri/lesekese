@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, ReactNode } from 'react';
+import { useState, useEffect, useRef, FormEvent, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   CheckCircle2,
@@ -240,6 +240,10 @@ export function LandingPage() {
 
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedPkg, setSelectedPkg] = useState<string>('pkg-2');
+  const [fullName, setFullName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [formError, setFormError] = useState('');
   const orderRef = useRef<HTMLDivElement>(null);
   const { h, m, s } = useCountdown();
 
@@ -250,6 +254,29 @@ export function LandingPage() {
   };
 
   const selectedPackage = PACKAGES.find((p) => p.id === selectedPkg) ?? PACKAGES[1];
+
+  const buildOrderWaLink = () => {
+    const msg = encodeURIComponent(
+      `NEW ORDER — ${PRODUCT_NAME}\n\n` +
+        `*Package:* ${selectedPackage.label} Pack (${selectedPackage.qty} bottle${selectedPackage.qty > 1 ? 's' : ''} × 500ml)\n` +
+        `*Price:* ₦${selectedPackage.price.toLocaleString()}\n\n` +
+        `*Full Name:* ${fullName.trim()}\n` +
+        `*Phone Number:* ${phoneNumber.trim()}\n` +
+        `*Delivery Address:* ${deliveryAddress.trim()}\n\n` +
+        `Please confirm my order and delivery details.`
+    );
+    return `https://wa.me/${WA_NUMBER}?text=${msg}`;
+  };
+
+  const handleSendOrder = (e: FormEvent) => {
+    e.preventDefault();
+    if (!fullName.trim() || !phoneNumber.trim() || !deliveryAddress.trim()) {
+      setFormError('Please fill in your full name, phone number and delivery address.');
+      return;
+    }
+    setFormError('');
+    window.open(buildOrderWaLink(), '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <div className="min-h-screen bg-[#080d0a] text-white font-sans overflow-x-hidden selection:bg-red-600 selection:text-white">
@@ -869,58 +896,111 @@ export function LandingPage() {
                 Buy {PRODUCT_NAME} Now — Pay on Delivery in Lagos
               </h2>
               <p className="text-slate-400 text-sm">
-                Select your package and we&apos;ll confirm your order via WhatsApp within minutes. Nationwide delivery.
+                Fill in your details, select your package, and we&apos;ll confirm your order via WhatsApp within minutes. Nationwide delivery.
               </p>
             </div>
           </FadeIn>
 
           <FadeIn delay={0.1}>
             <div className="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 space-y-5">
-              {/* Package selector */}
-              <div>
-                <label className="block text-white font-bold text-sm mb-2">Select Your Package</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {PACKAGES.map((pkg) => (
-                    <button
-                      key={pkg.id}
-                      onClick={() => setSelectedPkg(pkg.id)}
-                      className={`text-left p-3 rounded-xl border text-xs transition-all duration-150 ${
-                        selectedPkg === pkg.id
-                          ? 'border-red-500 bg-red-600/20 text-white'
-                          : 'border-slate-700 bg-slate-800 text-slate-400 hover:border-slate-500'
-                      }`}
-                    >
-                      <p className="font-bold">{pkg.label} Pack</p>
-                      <p className="text-[10px] opacity-70 mt-0.5">
-                        {pkg.qty} bottle{pkg.qty > 1 ? 's' : ''} — ₦{pkg.price.toLocaleString()}
-                      </p>
-                    </button>
-                  ))}
+              {/* Order form */}
+              <form onSubmit={handleSendOrder} className="space-y-5">
+                {/* Package selector */}
+                <div>
+                  <label className="block text-white font-bold text-sm mb-2">Select Your Package</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {PACKAGES.map((pkg) => (
+                      <button
+                        type="button"
+                        key={pkg.id}
+                        onClick={() => setSelectedPkg(pkg.id)}
+                        className={`text-left p-3 rounded-xl border text-xs transition-all duration-150 ${
+                          selectedPkg === pkg.id
+                            ? 'border-red-500 bg-red-600/20 text-white'
+                            : 'border-slate-700 bg-slate-800 text-slate-400 hover:border-slate-500'
+                        }`}
+                      >
+                        <p className="font-bold">{pkg.label} Pack</p>
+                        <p className="text-[10px] opacity-70 mt-0.5">
+                          {pkg.qty} bottle{pkg.qty > 1 ? 's' : ''} — ₦{pkg.price.toLocaleString()}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* WhatsApp CTA */}
-              <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 text-center">
-                <p className="text-slate-400 text-xs mb-3 leading-relaxed">
-                  Clicking the button below opens WhatsApp with your order pre-filled.
-                  Just send the message and our team will call you to confirm delivery!
-                </p>
-                <a
-                  href={buildWaLink(selectedPackage)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white font-black text-base px-6 py-4 rounded-xl shadow-[0_0_20px_rgba(34,197,94,0.3)] transition-all duration-200 hover:scale-[1.02] active:scale-95"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Send Order via WhatsApp
-                </a>
-                <p className="text-slate-500 text-xs mt-2">
-                  Selected:{' '}
-                  <strong className="text-white">
-                    {selectedPackage.label} Pack — ₦{selectedPackage.price.toLocaleString()}
-                  </strong>
-                </p>
-              </div>
+                {/* Full name */}
+                <div>
+                  <label htmlFor="order-name" className="block text-white font-bold text-sm mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    id="order-name"
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="e.g. Adaeze Okafor"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/30 transition-all"
+                  />
+                </div>
+
+                {/* Phone number */}
+                <div>
+                  <label htmlFor="order-phone" className="block text-white font-bold text-sm mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    id="order-phone"
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder="e.g. 0803 123 4567"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/30 transition-all"
+                  />
+                </div>
+
+                {/* Delivery address */}
+                <div>
+                  <label htmlFor="order-address" className="block text-white font-bold text-sm mb-2">
+                    Delivery Address
+                  </label>
+                  <textarea
+                    id="order-address"
+                    rows={2}
+                    value={deliveryAddress}
+                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                    placeholder="e.g. No. 12 Adebayo Street, Ikeja, Lagos"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/30 transition-all resize-none"
+                  />
+                </div>
+
+                {formError && (
+                  <p className="text-red-400 text-sm font-semibold" role="alert">
+                    {formError}
+                  </p>
+                )}
+
+                {/* Send order */}
+                <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 text-center">
+                  <p className="text-slate-400 text-xs mb-3 leading-relaxed">
+                    Clicking &quot;Send Order&quot; opens WhatsApp with your order details pre-filled.
+                    Just hit send and our team will confirm your delivery!
+                  </p>
+                  <button
+                    type="submit"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white font-black text-base px-6 py-4 rounded-xl shadow-[0_0_20px_rgba(34,197,94,0.3)] transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    Send Order via WhatsApp
+                  </button>
+                  <p className="text-slate-500 text-xs mt-2">
+                    Selected:{' '}
+                    <strong className="text-white">
+                      {selectedPackage.label} Pack — ₦{selectedPackage.price.toLocaleString()}
+                    </strong>
+                  </p>
+                </div>
+              </form>
 
               {/* Call option */}
               <div className="text-center">
