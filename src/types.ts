@@ -8,6 +8,8 @@ export interface Product {
   popular?: boolean;
   description: string;
   kills: string[];
+  features?: string[];           // for non-insecticide products (e.g. powder repellents)
+  productType?: 'spray' | 'powder'; // defaults to spray if omitted
   sprayType: string;
   coverageArea: string;
   stockStatus: 'In Stock' | 'Low Stock' | 'Bulk Available';
@@ -33,12 +35,13 @@ export interface DistributorLocation {
     ml500: boolean;
     ml250: boolean;
     ml100: boolean;
+    sendOff: boolean;
   };
 }
 
 export interface FAQItem {
   id: string;
-  category: 'Safety' | 'Efficacy' | 'Application' | 'Ordering' | 'Storage';
+  category: 'Safety' | 'Efficacy' | 'Application' | 'Ordering' | 'Storage' | 'Send Off';
   question: string;
   answer: string;
 }

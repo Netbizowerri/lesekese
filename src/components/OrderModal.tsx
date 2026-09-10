@@ -10,17 +10,19 @@ interface OrderModalProps {
 }
 
 export function OrderModal({ isOpen, onClose, selectedSizeMl = 500 }: OrderModalProps) {
-  const [sizeMl, setSizeMl] = useState<number>(selectedSizeMl);
+  const defaultProduct = PRODUCTS.find((p) => p.sizeMl === selectedSizeMl && p.productType !== 'powder') || PRODUCTS[0];
+  const [selectedProductId, setSelectedProductId] = useState<string>(defaultProduct.id);
   const [quantity, setQuantity] = useState<number>(2);
   const [selectedStore, setSelectedStore] = useState<string>(LOCATIONS[0].name);
 
   if (!isOpen) return null;
 
-  const product = PRODUCTS.find((p) => p.sizeMl === sizeMl) || PRODUCTS[0];
+  const product = PRODUCTS.find((p) => p.id === selectedProductId) || PRODUCTS[0];
   const totalPriceNgn = product.priceNgn * quantity;
+  const isPowder = product.productType === 'powder';
 
   const whatsappMessage = encodeURIComponent(
-    `Hello LESEKESE Depot! I want to order ${quantity}x ${product.name} (Total: ₦${totalPriceNgn.toLocaleString()}). Preferred Pickup/Delivery: ${selectedStore}.`
+    `Hello LESEKESE Depot! I want to order ${quantity}x ${product.name} — ${product.sizeLabel} (Total: ₦${totalPriceNgn.toLocaleString()}). Preferred Pickup/Delivery: ${selectedStore}.`
   );
 
   return (
@@ -61,22 +63,24 @@ export function OrderModal({ isOpen, onClose, selectedSizeMl = 500 }: OrderModal
             {/* Size Selector */}
             <div>
               <label className="block text-xs font-accent font-bold uppercase text-slate-700 mb-2">
-                Select Bottle Size
+                Select Product
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {PRODUCTS.map((p) => (
                   <button
                     key={p.id}
                     type="button"
-                    onClick={() => setSizeMl(p.sizeMl)}
-                    className={`py-2.5 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                      sizeMl === p.sizeMl
-                        ? 'bg-red-600 text-white border border-red-400 shadow-md shadow-red-600/30'
+                    onClick={() => setSelectedProductId(p.id)}
+                    className={`py-2.5 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer text-left ${
+                      selectedProductId === p.id
+                        ? p.productType === 'powder'
+                          ? 'bg-emerald-600 text-white border border-emerald-400 shadow-md shadow-emerald-600/30'
+                          : 'bg-red-600 text-white border border-red-400 shadow-md shadow-red-600/30'
                         : 'glass-pill text-slate-600 hover:bg-slate-100'
                     }`}
                   >
-                    <div>{p.sizeLabel}</div>
-                    <div className="text-xs text-amber-600 font-mono mt-0.5">₦{p.priceNgn.toLocaleString()}</div>
+                    <div className="font-bold truncate">{p.sizeLabel}</div>
+                    <div className="text-xs text-amber-300 font-mono mt-0.5">₦{p.priceNgn.toLocaleString()}</div>
                   </button>
                 ))}
               </div>
@@ -85,8 +89,8 @@ export function OrderModal({ isOpen, onClose, selectedSizeMl = 500 }: OrderModal
             {/* Quantity Stepper */}
             <div className="flex items-center justify-between glass-pill p-3 rounded-xl">
               <div>
-                <span className="block text-xs font-bold text-slate-900">Quantity (Bottles)</span>
-                <span className="text-[10px] text-slate-500">₦{product.priceNgn} per bottle</span>
+                <span className="block text-xs font-bold text-slate-900">Quantity ({isPowder ? 'Packs' : 'Bottles'})</span>
+                <span className="text-[10px] text-slate-500">₦{product.priceNgn.toLocaleString()} per {isPowder ? 'pack' : 'bottle'}</span>
               </div>
               <div className="flex items-center gap-3">
                 <button

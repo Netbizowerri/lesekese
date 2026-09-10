@@ -14,7 +14,9 @@ export function ProductsPage({ onNavigate, onOpenOrderModal }: ProductsPageProps
   const [selectedSizeForComparison, setSelectedSizeForComparison] = useState<number>(500);
   const [cartonQty, setCartonQty] = useState<number>(5);
 
-  const selectedProduct = PRODUCTS.find((p) => p.sizeMl === selectedSizeForComparison) || PRODUCTS[0];
+  const sprayProducts = PRODUCTS.filter((p) => p.productType !== 'powder');
+  const powderProducts = PRODUCTS.filter((p) => p.productType === 'powder');
+  const selectedProduct = sprayProducts.find((p) => p.sizeMl === selectedSizeForComparison) || sprayProducts[0];
   
   // Bulk carton discount calculation: 24 bottles per carton
   const bottlesPerCarton = 24;
@@ -48,9 +50,9 @@ export function ProductsPage({ onNavigate, onOpenOrderModal }: ProductsPageProps
         </div>
       </section>
 
-      {/* Main Product Cards Grid */}
+      {/* Spray Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {PRODUCTS.map((prod) => (
+        {sprayProducts.map((prod) => (
           <ProductCard
             key={prod.id}
             product={prod}
@@ -59,6 +61,56 @@ export function ProductsPage({ onNavigate, onOpenOrderModal }: ProductsPageProps
           />
         ))}
       </div>
+
+      {/* SEND OFF Powder — full-width spotlight */}
+      {powderProducts.map((prod) => (
+        <div key={prod.id} className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <ProductCard
+            product={prod}
+            onOrder={(p) => onOpenOrderModal(p.sizeMl)}
+            onLocateStore={() => onNavigate('/locations')}
+          />
+          <div className="glass-card p-8 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-white via-emerald-50 to-teal-50 space-y-6 h-full flex flex-col justify-center">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-xs font-bold text-emerald-700 uppercase tracking-widest border border-emerald-300/60 self-start">
+              <span>🐍</span>
+              <span>Snake &amp; Scorpion Repellent</span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-tight">
+              ABOUT LESEKESE SEND OFF
+            </h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              LESEKESE SEND OFF Snakes &amp; Scorpions Repellent Powder is a specially formulated deterrent
+              designed to help create a protective barrier against snakes, scorpions, reptiles and other
+              unwanted crawling pests around your environment. Its active repellent action produces an
+              unpleasant smell and disturbing effect that helps discourage snakes, scorpions and other
+              reptiles from entering or remaining in treated areas.
+            </p>
+            <div className="space-y-3">
+              <div className="text-xs font-accent font-bold text-slate-700 uppercase tracking-wider">Directions for Use:</div>
+              <ul className="space-y-2 text-sm text-slate-600">
+                {[
+                  'Sprinkle powder evenly around areas where snakes & scorpions may enter.',
+                  'Apply around entrances, boundaries, storage areas & outdoor perimeters.',
+                  'Do not apply directly to people, animals, food or water.',
+                  'Reapply after heavy rain or when repellent effect reduces.',
+                  'Keep children and pets away from freshly treated areas.'
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-800 font-medium">
+              ⚠️ <strong>Warning:</strong> Keep out of reach of children. Avoid breathing dust. Avoid contact with eyes, skin and clothing. Wash hands thoroughly after use.
+            </div>
+            <p className="text-[11px] text-slate-400 italic">
+              Manufactured by LESEKESE ALLIED PRODUCTS INDUSTRIES
+            </p>
+          </div>
+        </div>
+      ))}
 
       {/* ================= WHOLESALE & BULK CARTON CALCULATOR ================= */}
       <div className="glass-card p-8 rounded-3xl border border-slate-200 shadow-2xl bg-gradient-to-br from-white via-slate-50 to-red-50 space-y-8">

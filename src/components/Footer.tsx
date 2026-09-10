@@ -26,7 +26,7 @@ export function Footer({ onNavigate }: FooterProps) {
             </div>
 
             <p className="text-sm text-slate-600 leading-relaxed max-w-sm">
-              LESEKESE Allied Products is Nigeria’s leading instant pest elimination formula for bedbugs, cockroaches, mosquitoes, and household insects. Built with fast-knockdown dehydration technology and 3+ days residual action.
+            LESEKESE Allied Products is Nigeria's leading instant pest elimination brand — fast-knockdown insecticide sprays for bedbugs, cockroaches and household insects, plus SEND OFF, our powerful snakes and scorpions repellent powder.
             </p>
 
             <div className="flex items-center gap-3 pt-2">
@@ -45,7 +45,7 @@ export function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-2 text-xs">
               {[
                 { label: 'Home Page', path: '/' },
-                { label: 'Product Range (500ml, 250ml)', path: '/products' },
+                { label: 'Product Range (Sprays + SEND OFF)', path: '/products' },
                 { label: 'How It Works & Mechanism', path: '/how-it-works' },
                 { label: 'Abule Egba & Store Locator', path: '/locations' },
                 { label: 'Bulk Orders & Contact', path: '/contact' }

@@ -558,6 +558,121 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
         </div>
       </section>
 
+      {/* ================= LESEKESE SEND OFF SPOTLIGHT ================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="glass-card rounded-3xl border border-emerald-500/30 shadow-2xl overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+
+            {/* Left Column — Hero Image */}
+            <div className="relative bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-950 flex items-center justify-center min-h-[340px] lg:min-h-full overflow-hidden">
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl" />
+                <div className="absolute bottom-10 right-10 w-48 h-48 bg-teal-400/15 rounded-full blur-2xl" />
+              </div>
+              <img
+                src="https://i.ibb.co/0Rwr9sPR/Whats-App-Image-2026-08-31-at-12-19-47-PM.jpg"
+                alt="LESEKESE SEND OFF - Snakes and Scorpions Repellent Powder"
+                referrerPolicy="no-referrer"
+                loading="lazy"
+                className="relative z-10 w-full h-full object-cover object-center"
+              />
+              <div className="absolute bottom-4 left-4 z-20 px-4 py-2 rounded-xl bg-black/60 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-xs font-accent font-bold flex items-center gap-2">
+                <span>🐍</span>
+                <span>Snakes &amp; Scorpions Repellent Powder</span>
+              </div>
+            </div>
+
+            {/* Right Column — Content */}
+            <div className="p-8 md:p-12 space-y-6 bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/30">
+
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-xs font-bold text-emerald-700 uppercase tracking-widest border border-emerald-300/60">
+                <span>🆕</span>
+                <span>New Product — Now Available</span>
+              </div>
+
+              <div className="space-y-1">
+                <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight leading-tight">
+                  LESEKESE SEND OFF
+                </h2>
+                <p className="text-sm font-accent font-semibold text-emerald-600 uppercase tracking-wide">
+                  250g · Snakes &amp; Scorpions Repellent Powder
+                </p>
+              </div>
+
+              <div className="flex items-baseline gap-3">
+                <span className="text-3xl font-display font-bold text-amber-600">₦6,000</span>
+                <span className="text-xs bg-red-50 text-red-600 font-bold px-2 py-0.5 rounded border border-red-200">Retail Price</span>
+              </div>
+
+              <p className="text-sm text-slate-600 leading-relaxed">
+                LESEKESE SEND OFF is a specially formulated deterrent designed to create a powerful
+                protective barrier against snakes, scorpions, reptiles and other unwanted crawling pests.
+                Its active repellent action produces an unpleasant smell and disturbing effect that
+                helps discourage reptiles from entering or remaining in treated areas — for up to{' '}
+                <strong className="text-slate-900">3 weeks</strong> per application.
+              </p>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                {[
+                  { icon: '🐍', label: 'Repels Snakes & Reptiles' },
+                  { icon: '🦂', label: 'Repels Scorpions' },
+                  { icon: '🏡', label: 'Homes, Farms & Offices' },
+                  { icon: '⏱️', label: 'Up to 3 Weeks Protection' },
+                  { icon: '🌿', label: 'Outdoor Perimeter Safe' },
+                  { icon: '✅', label: 'Tested & Confirmed' },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-white/80 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-700">
+                    <span className="text-base leading-none">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-accent font-bold text-slate-700 uppercase tracking-wider">
+                  Suitable for Use Around:
+                </p>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  Homes, offices, farms, stores, compounds and outdoor areas where reptile and pest
+                  activity is a concern. Sprinkle evenly around perimeters, entrances, boundaries
+                  and storage areas. Reapply after heavy rain for continuous protection.
+                </p>
+              </div>
+
+              <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800">
+                <span className="text-base leading-none shrink-0">⚠️</span>
+                <span>
+                  <strong>Warning:</strong> Keep out of reach of children. Avoid breathing dust. Avoid
+                  contact with eyes, skin and clothing. Do not eat, drink or smoke while handling.
+                </span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                <button
+                  onClick={() => onOpenOrderModal()}
+                  className="py-4 px-8 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 text-white font-accent font-bold text-sm uppercase tracking-wider shadow-xl shadow-emerald-600/30 hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span>🛒</span>
+                  <span>Order SEND OFF Now</span>
+                </button>
+                <button
+                  onClick={() => onNavigate('/products')}
+                  className="py-4 px-6 rounded-2xl glass-pill text-slate-700 font-accent font-bold text-sm hover:border-emerald-500 hover:text-emerald-700 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <ArrowRight className="w-4 h-4 text-emerald-600" />
+                  <span>See Full Product Details</span>
+                </button>
+              </div>
+
+              <p className="text-[11px] text-slate-400 italic">
+                Manufactured by LESEKESE ALLIED PRODUCTS INDUSTRIES
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

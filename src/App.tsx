@@ -15,6 +15,7 @@ import { PrivacyPage } from './pages/PrivacyPage';
 import { TermsPage } from './pages/TermsPage';
 import { SafetyMSDSPage } from './pages/SafetyMSDSPage';
 import { RefundsPage } from './pages/RefundsPage';
+import { LandingPage } from './pages/LandingPage';
 
 const ROUTES = [
   '/',
@@ -26,7 +27,12 @@ const ROUTES = [
   '/privacy',
   '/terms',
   '/safety',
-  '/refunds'
+  '/refunds',
+  '/lesekese-bedbugs-and-cockroaches-instant-killer'
+];
+
+const STANDALONE_ROUTES = [
+  '/lesekese-bedbugs-and-cockroaches-instant-killer'
 ];
 
 const SITE_URL = 'https://www.lesekeseproducts.com';
@@ -76,6 +82,11 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   '/refunds': {
     title: 'Refund & Replacement Policy | LESEKESE Products',
     description: 'LESEKESE refund and replacement policy for defective products and order issues.'
+  },
+  '/lesekese-bedbugs-and-cockroaches-instant-killer': {
+    title: 'LESEKESE Bedbugs & Cockroaches Instant Killer — Kill on Contact | Nigeria',
+    description:
+      'Finally end your bedbug nightmare. LESEKESE Instant Killer kills bedbugs, cockroaches & eggs on contact with 3+ day residual protection. Order via WhatsApp — pay on delivery across Nigeria.'
   }
 };
 
@@ -187,10 +198,22 @@ export default function App() {
         return <SafetyMSDSPage onNavigate={navigateTo} />;
       case '/refunds':
         return <RefundsPage onNavigate={navigateTo} />;
+      case '/lesekese-bedbugs-and-cockroaches-instant-killer':
+        return <LandingPage />;
       default:
         return <HomePage onNavigate={navigateTo} onOpenOrderModal={handleOpenOrderModal} />;
     }
   };
+
+  // Standalone routes render without Navbar/Footer (pure sales funnel)
+  if (STANDALONE_ROUTES.includes(currentPath)) {
+    return (
+      <>
+        <ScrollToTop currentPath={currentPath} />
+        {renderCurrentPage()}
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 bg-bug-pattern text-slate-900 flex flex-col font-sans relative selection:bg-red-500 selection:text-white">

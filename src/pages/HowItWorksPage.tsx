@@ -13,7 +13,7 @@ export function HowItWorksPage({ onNavigate, onOpenOrderModal }: HowItWorksPageP
   const [openFaqId, setOpenFaqId] = useState<string | null>(FAQS[0].id);
   const [faqSearchQuery, setFaqSearchQuery] = useState('');
 
-  const categories = ['All', 'Safety', 'Efficacy', 'Application', 'Ordering', 'Storage'];
+  const categories = ['All', 'Safety', 'Efficacy', 'Application', 'Ordering', 'Storage', 'Send Off'];
 
   const filteredFaqs = FAQS.filter((faq) => {
     const matchesCat = activeFaqCategory === 'All' || faq.category === activeFaqCategory;
@@ -42,7 +42,7 @@ export function HowItWorksPage({ onNavigate, onOpenOrderModal }: HowItWorksPageP
             HOW LESEKESE ERADICATES PESTS
           </h1>
           <p className="text-sm sm:text-base text-slate-200 leading-relaxed drop-shadow">
-            Learn how our fast-acting knockdown formula disrupts insect nervous systems and dehydrates bedbugs and cockroaches on contact.
+            Learn how our fast-acting knockdown formula disrupts insect nervous systems and dehydrates bedbugs and cockroaches on contact — and how LESEKESE SEND OFF creates an unbeatable reptile barrier around your home.
           </p>
         </div>
       </section>
@@ -94,6 +94,76 @@ export function HowItWorksPage({ onNavigate, onOpenOrderModal }: HowItWorksPageP
               <p className="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ================= SEND OFF USAGE GUIDE ================= */}
+      <div className="glass-card p-8 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/30 space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 p-0.5 shadow-lg">
+            <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center text-xl">🐍</div>
+          </div>
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-[11px] font-bold text-emerald-700 uppercase tracking-widest border border-emerald-300/60 mb-1">
+              NEW PRODUCT
+            </div>
+            <h2 className="text-2xl font-display font-bold text-slate-900 tracking-wide">
+              HOW TO USE LESEKESE SEND OFF
+            </h2>
+            <p className="text-xs text-emerald-600 font-medium">Snakes &amp; Scorpions Repellent Powder — 250g</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Steps */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-accent font-bold text-slate-900 uppercase tracking-wider">Application Steps:</h3>
+            {[
+              { step: '01', title: 'Identify the Perimeter', desc: 'Walk around your home, farm, or compound and identify all entry points — doorways, wall edges, drains, fence bases, storage room entrances, and outdoor paths.' },
+              { step: '02', title: 'Sprinkle the Powder', desc: 'Sprinkle LESEKESE SEND OFF evenly on the ground around the perimeter, concentrating on areas of reptile activity or entry. No mixing, no sprayer needed.' },
+              { step: '03', title: 'Create a Continuous Barrier', desc: 'Ensure the powder forms an unbroken line around the area requiring protection. Do not leave gaps — snakes and scorpions will find and exploit any opening.' },
+              { step: '04', title: 'Reapply as Needed', desc: 'The repellent barrier lasts up to 3 weeks. After heavy rain or when effectiveness reduces, reapply to maintain full protection.' },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-start gap-4">
+                <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white font-display font-bold text-sm flex items-center justify-center shrink-0">{item.step}</div>
+                <div>
+                  <h4 className="font-accent font-bold text-sm text-slate-900">{item.title}</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed mt-0.5">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Safety & Where to use */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-accent font-bold text-slate-900 uppercase tracking-wider">Best Use Locations:</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { icon: '🏡', label: 'Home Compounds' },
+                { icon: '🌾', label: 'Farms & Plantations' },
+                { icon: '🏢', label: 'Offices & Stores' },
+                { icon: '🏚️', label: 'Storage Areas' },
+                { icon: '🔒', label: 'Fence Perimeters' },
+                { icon: '🚪', label: 'Doorways & Entrances' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-2 bg-white/80 border border-emerald-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-700">
+                  <span className="text-sm">{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-2 text-xs text-amber-800">
+              <p className="font-bold uppercase tracking-wide">⚠️ Safety Precautions:</p>
+              <ul className="space-y-1 list-disc list-inside">
+                <li>Keep out of reach of children</li>
+                <li>Avoid breathing dust during application</li>
+                <li>Do not apply to food, water, animals, or people</li>
+                <li>Wash hands thoroughly after use</li>
+                <li>Keep pets away from freshly treated areas</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
 

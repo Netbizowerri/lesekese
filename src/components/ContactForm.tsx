@@ -289,6 +289,10 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
                   <option value="5 Cartons (120 Bottles)">5 Cartons (120 Bottles)</option>
                   <option value="10 Cartons (240 Bottles)">10 Cartons (240 Bottles)</option>
                   <option value="50+ Cartons Wholesale">50+ Cartons Wholesale / Hotel Supply</option>
+                  <option value="SEND OFF — 1 Pack (250g)">SEND OFF — 1 Pack (250g) ₦6,000</option>
+                  <option value="SEND OFF — 5 Packs (250g x5)">SEND OFF — 5 Packs (250g x5) ₦30,000</option>
+                  <option value="SEND OFF — 10 Packs (250g x10)">SEND OFF — 10 Packs (250g x10) ₦60,000</option>
+                  <option value="Mixed Order (Spray + SEND OFF)">Mixed Order (Spray + SEND OFF)</option>
                 </select>
               </div>
             )}
@@ -302,7 +306,7 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
                 rows={3}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                placeholder="Describe your pest issue, quantity needed, or specific delivery address..."
+                placeholder="Describe your pest issue, quantity needed, product (spray or SEND OFF powder), or specific delivery address..."
                 className="w-full px-4 py-3 rounded-xl glass-input text-xs font-medium placeholder-slate-500"
               />
             </div>

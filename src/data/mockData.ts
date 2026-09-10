@@ -5,6 +5,7 @@ export const ALL_PRODUCTS_IMAGE = 'https://i.ibb.co/TBmP6b9Q/Lesekese-1.png';
 export const BOTTLE_IMAGE_URL = 'https://i.ibb.co/3yKmDdjr/Lesekese.png';
 export const BOTTLE_IMAGE_250 = 'https://i.ibb.co/WpD7FHfc/Lesekese-3.png';
 export const BOTTLE_IMAGE_100 = 'https://i.ibb.co/6Rfw30hp/Lesekese-4.png';
+export const SEND_OFF_IMAGE_URL = 'https://i.ibb.co/JRRM44Q6/Untitled-design-5.jpg';
 export const STORE_IMAGE_URL = '/src/assets/images/lesekese_market_store_1786352293184.jpg';
 
 export const PRODUCTS: Product[] = [
@@ -75,6 +76,31 @@ export const PRODUCTS: Product[] = [
     rating: 4.7,
     reviewsCount: 142,
     image: BOTTLE_IMAGE_100
+  },
+  {
+    id: 'prod-sendoff',
+    name: 'LESEKESE SEND OFF',
+    sizeMl: 250,
+    sizeLabel: '250g Powder',
+    priceNgn: 6000,
+    popular: false,
+    productType: 'powder',
+    description: 'Specially formulated repellent powder that creates a powerful protective barrier against snakes, scorpions, reptiles and crawling pests. Proven effective for up to 3 weeks per application.',
+    kills: [],
+    features: [
+      'Repels Snakes & All Reptiles',
+      'Repels Scorpions & Centipedes',
+      'Protects Homes, Farms & Compounds',
+      'Up to 3 Weeks Residual Barrier',
+      'Safe for Outdoor Perimeter Use',
+      'Unpleasant-Odor Deterrent Formula'
+    ],
+    sprayType: 'Sprinkle Powder — No Sprayer Needed',
+    coverageArea: 'Full Compound / Perimeter Protection',
+    stockStatus: 'In Stock',
+    rating: 4.8,
+    reviewsCount: 97,
+    image: SEND_OFF_IMAGE_URL
   }
 ];
 
@@ -92,7 +118,7 @@ export const LOCATIONS: DistributorLocation[] = [
     lng: 3.3289,
     isPrimary: true,
     photoUrl: STORE_IMAGE_URL,
-    stockAvailable: { ml500: true, ml250: true, ml100: true }
+    stockAvailable: { ml500: true, ml250: true, ml100: true, sendOff: true }
   },
   {
     id: 'dist-02',
@@ -107,7 +133,7 @@ export const LOCATIONS: DistributorLocation[] = [
     lng: 3.3341,
     isPrimary: false,
     photoUrl: STORE_IMAGE_URL,
-    stockAvailable: { ml500: true, ml250: true, ml100: true }
+    stockAvailable: { ml500: true, ml250: true, ml100: true, sendOff: true }
   },
   {
     id: 'dist-03',
@@ -120,7 +146,7 @@ export const LOCATIONS: DistributorLocation[] = [
     hours: 'Mon - Sat: 8:30 AM - 6:00 PM',
     lat: 6.5965,
     lng: 3.3421,
-    stockAvailable: { ml500: true, ml250: true, ml100: false }
+    stockAvailable: { ml500: true, ml250: true, ml100: false, sendOff: true }
   },
   {
     id: 'dist-04',
@@ -133,7 +159,7 @@ export const LOCATIONS: DistributorLocation[] = [
     hours: 'Mon - Sun: 8:00 AM - 8:00 PM',
     lat: 6.4985,
     lng: 3.3592,
-    stockAvailable: { ml500: true, ml250: true, ml100: true }
+    stockAvailable: { ml500: true, ml250: true, ml100: true, sendOff: true }
   },
   {
     id: 'dist-05',
@@ -146,7 +172,7 @@ export const LOCATIONS: DistributorLocation[] = [
     hours: 'Mon - Sat: 9:00 AM - 7:00 PM',
     lat: 6.4478,
     lng: 3.4723,
-    stockAvailable: { ml500: true, ml250: true, ml100: true }
+    stockAvailable: { ml500: true, ml250: true, ml100: true, sendOff: false }
   },
   {
     id: 'dist-06',
@@ -159,7 +185,7 @@ export const LOCATIONS: DistributorLocation[] = [
     hours: 'Mon - Sat: 8:00 AM - 6:00 PM',
     lat: 9.0765,
     lng: 7.4789,
-    stockAvailable: { ml500: true, ml250: true, ml100: true }
+    stockAvailable: { ml500: true, ml250: true, ml100: true, sendOff: true }
   },
   {
     id: 'dist-07',
@@ -172,7 +198,7 @@ export const LOCATIONS: DistributorLocation[] = [
     hours: 'Mon - Sat: 8:00 AM - 5:30 PM',
     lat: 4.8156,
     lng: 7.0123,
-    stockAvailable: { ml500: true, ml250: true, ml100: false }
+    stockAvailable: { ml500: true, ml250: true, ml100: false, sendOff: false }
   }
 ];
 
@@ -212,6 +238,24 @@ export const FAQS: FAQItem[] = [
     category: 'Storage',
     question: 'What is the shelf life and storage requirement?',
     answer: 'Keep the spray bottle tightly sealed in a cool, dry place away from direct sunlight and out of reach of children. Sealed shelf life is 36 months from manufacture date.'
+  },
+  {
+    id: 'faq-7',
+    category: 'Send Off',
+    question: 'What is LESEKESE SEND OFF and what pests does it repel?',
+    answer: 'LESEKESE SEND OFF is a specially formulated 250g powder repellent designed to create a protective barrier against snakes, scorpions, reptiles and crawling pests. Its active formula produces an unpleasant odour and disturbing effect that discourages snakes and scorpions from entering treated areas. It is NOT an insecticide — it is a deterrent/repellent powder, suitable for outdoor perimeters, farms, compounds, and storage areas.'
+  },
+  {
+    id: 'faq-8',
+    category: 'Send Off',
+    question: 'How do I apply LESEKESE SEND OFF and how long does it last?',
+    answer: 'Simply sprinkle LESEKESE SEND OFF powder evenly on the ground around the area requiring protection — perimeter walls, entrances, boundaries, farm edges, store surrounds, and any location where reptile activity is a concern. Do not apply directly to people, animals, food, or water. One application provides a repellent barrier for up to 3 weeks, depending on rainfall and surface conditions. Reapply after heavy rain or when the repellent effect weakens.'
+  },
+  {
+    id: 'faq-9',
+    category: 'Send Off',
+    question: 'Is LESEKESE SEND OFF safe for children and pets around the treated area?',
+    answer: 'Keep children and pets away from freshly treated areas. Avoid breathing the dust during application. Wash hands thoroughly after use. Do not allow direct contact with eyes, skin, or clothing. If inhaled, move to fresh air immediately and seek medical attention if symptoms persist. When used as directed on outdoor perimeters, LESEKESE SEND OFF poses no risk to household members who are not in direct contact with the powder.'
   }
 ];
 
@@ -254,5 +298,6 @@ export const SAMPLE_LEADS: LeadSubmission[] = [
 export const DISTRIBUTOR_INVENTORY: InventoryItem[] = [
   { size: '500ml Big Size', inStock: 340, soldMtd: 1200, reorderThreshold: 100, unitPrice: 3000 },
   { size: '250ml Medium Size', inStock: 520, soldMtd: 890, reorderThreshold: 150, unitPrice: 2000 },
-  { size: '100ml Small Size', inStock: 180, soldMtd: 410, reorderThreshold: 50, unitPrice: 1000 }
+  { size: '100ml Small Size', inStock: 180, soldMtd: 410, reorderThreshold: 50, unitPrice: 1000 },
+  { size: 'SEND OFF 250g Powder', inStock: 210, soldMtd: 195, reorderThreshold: 40, unitPrice: 6000 }
 ];

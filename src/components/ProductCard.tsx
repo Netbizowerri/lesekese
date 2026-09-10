@@ -1,6 +1,6 @@
 import { Product } from '../types';
 import { motion } from 'motion/react';
-import { CheckCircle2, ShoppingBag, ShieldCheck, Zap } from 'lucide-react';
+import { CheckCircle2, ShoppingBag, ShieldCheck, Zap, ShieldPlus } from 'lucide-react';
 
 interface ProductCardProps {
   key?: string;
@@ -10,6 +10,9 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProps) {
+  const isPowder = product.productType === 'powder';
+  const displayList = isPowder ? (product.features ?? []) : product.kills;
+
   return (
     <motion.div
       whileHover={{ y: -8 }}
@@ -18,7 +21,7 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
         product.popular ? 'border-2 border-brand shadow-2xl shadow-red-600/20' : ''
       }`}
     >
-      {/* Popular Badge */}
+      {/* Most Popular Badge */}
       {product.popular && (
         <div className="absolute top-4 right-4 bg-gradient-to-r from-red-600 to-amber-500 text-white text-[11px] font-accent font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
           <Zap className="w-3 h-3 fill-white" />
@@ -26,9 +29,17 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
         </div>
       )}
 
+      {/* Powder / New Product Badge */}
+      {isPowder && (
+        <div className="absolute top-4 right-4 bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-[11px] font-accent font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
+          <ShieldPlus className="w-3 h-3" />
+          <span>NEW — Repellent</span>
+        </div>
+      )}
+
       <div>
         {/* Product Image Showcase */}
-        <div className="relative w-full h-48 sm:h-52 mb-5 flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-slate-100 via-slate-50 to-white p-3 border border-brand group-hover:border-brand transition-all">
+        <div className="relative w-full h-48 sm:h-52 mb-5 flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-slate-100 via-slate-50 to-white p-3 border border-brand transition-all">
           <img
             src={product.image}
             alt={product.name}
@@ -36,7 +47,7 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
             className="max-h-full max-w-full object-contain filter drop-shadow-[0_10px_20px_rgba(220,38,38,0.4)] transition-transform duration-300 hover:scale-105"
           />
           <div className="absolute bottom-2 right-2 px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur-md border border-amber-400/40 text-[10px] font-bold text-amber-600 flex items-center gap-1 shadow-md">
-            <span>{product.sizeMl}ml Bottle</span>
+            <span>{product.sizeLabel}</span>
           </div>
         </div>
 
@@ -45,6 +56,11 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
           <h3 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-wide">
             {product.name}
           </h3>
+          {isPowder && (
+            <p className="text-xs font-accent font-semibold text-emerald-600 mt-0.5">
+              Snakes &amp; Scorpions Repellent Powder
+            </p>
+          )}
         </div>
 
         {/* Pricing */}
@@ -66,20 +82,24 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
           {product.description}
         </p>
 
-        {/* Key Features & Target Pests */}
-        <div className="space-y-2 mb-6">
-          <div className="text-xs font-accent font-bold text-slate-700 uppercase tracking-wider">
-            Target Pests Eradicated:
+        {/* Features or Kills list */}
+        {displayList.length > 0 && (
+          <div className="space-y-2 mb-6">
+            <div className="text-xs font-accent font-bold text-slate-700 uppercase tracking-wider">
+              {isPowder ? 'Features & Protection:' : 'Target Pests Eradicated:'}
+            </div>
+            <div className="grid grid-cols-1 gap-2">
+              {displayList.slice(0, 5).map((item, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                  <CheckCircle2
+                    className={`w-4 h-4 shrink-0 ${isPowder ? 'text-emerald-500' : 'text-red-500'}`}
+                  />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 gap-2">
-            {product.kills.slice(0, 4).map((pest, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm text-slate-600">
-                <CheckCircle2 className="w-4 h-4 text-red-500 shrink-0" />
-                <span>{pest}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        )}
 
         {/* Coverage details */}
         <div className="glass-pill p-3 rounded-xl text-xs sm:text-sm text-slate-600 mb-6 flex items-center justify-between border border-slate-200">
@@ -92,10 +112,14 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
       <div className="space-y-2.5 pt-2">
         <button
           onClick={() => onOrder(product)}
-          className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-red-600 via-red-500 to-amber-600 text-white font-bold text-sm uppercase tracking-wider shadow-lg shadow-red-600/30 hover:brightness-110 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className={`w-full py-3.5 px-4 rounded-xl text-white font-bold text-sm uppercase tracking-wider shadow-lg hover:brightness-110 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            isPowder
+              ? 'bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 shadow-emerald-600/30'
+              : 'bg-gradient-to-r from-red-600 via-red-500 to-amber-600 shadow-red-600/30'
+          }`}
         >
-          <ShoppingBag className="w-4.5 h-4.5" />
-          <span>Order Now / Bulk Request</span>
+          <ShoppingBag className="w-4 h-4" />
+          <span>{isPowder ? 'Order Now / Enquire' : 'Order Now / Bulk Request'}</span>
         </button>
 
         <button
