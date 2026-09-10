@@ -18,9 +18,12 @@ import {
   Package,
 } from 'lucide-react';
 
-const HERO_IMG = 'https://i.ibb.co/TBmP6b9Q/Lesekese-1.png';
+const HERO_IMG = 'https://i.ibb.co/G3B8BJpd/Buy-Lesekese-Bedbugs-and-Cockroaches-Instant-Killer-1.png';
 const BOTTLE_IMG = 'https://i.ibb.co/3yKmDdjr/Lesekese.png';
 const LOGO_URL = 'https://i.ibb.co/zhWkB5Fh/LESEKESE.jpg';
+
+const PRODUCT_NAME = 'Lesekese Bedbugs and Cockroaches Instant Killer';
+const BRAND_NAME = 'LESEKESE';
 
 const WA_NUMBER = '2348023725740';
 const PHONE_NUMBER = '08023725740';
@@ -72,7 +75,7 @@ const TESTIMONIALS = [
   {
     name: 'Mrs. Adunola Bakare',
     city: 'Surulere, Lagos',
-    text: 'I spent ₦40,000 on fumigators twice and the bedbugs returned within a week. One bottle of LESEKESE and they were dead within MINUTES. This thing is real!',
+    text: `I spent ₦40,000 on fumigators twice and the bedbugs returned within a week. One bottle of ${PRODUCT_NAME} and they were dead within MINUTES. This thing is real!`,
     stars: 5,
   },
   {
@@ -84,19 +87,19 @@ const TESTIMONIALS = [
   {
     name: 'Chidinma Okafor',
     city: 'Enugu',
-    text: 'I was too ashamed to invite visitors because of cockroaches everywhere. LESEKESE cleared my kitchen in one spray. The smell is mild — not harsh like SNIPER.',
+    text: `I was too ashamed to invite visitors because of cockroaches everywhere. ${PRODUCT_NAME} cleared my kitchen in one spray. The smell is mild — not harsh like SNIPER.`,
     stars: 5,
   },
   {
     name: 'Engr. Tunde Adeleke',
     city: 'Ikeja, Lagos',
-    text: 'As a pest control professional, I tested LESEKESE against 3 other brands. Fastest knockdown I have ever seen. I now recommend it to every single client.',
+    text: `As a pest control professional, I tested ${PRODUCT_NAME} against 3 other brands. Fastest knockdown I have ever seen. I now recommend it to every single client.`,
     stars: 5,
   },
   {
     name: 'Mama Ngozi',
     city: 'Port Harcourt',
-    text: 'My daughter brought bedbugs from school hostel. Within 3 days of LESEKESE, everything was gone — even the eggs. God bless whoever made this product!',
+    text: `My daughter brought bedbugs from school hostel. Within 3 days of ${PRODUCT_NAME}, everything was gone — even the eggs. God bless whoever made this product!`,
     stars: 5,
   },
   {
@@ -109,16 +112,16 @@ const TESTIMONIALS = [
 
 const FAQS = [
   {
-    q: 'How fast does LESEKESE kill bedbugs in Lagos?',
-    a: 'LESEKESE delivers instant knockdown on contact — bedbugs die within seconds of being sprayed in any Lagos home. The residual formula continues killing survivors and newly hatched eggs for 3+ days after application, making it the fastest bedbug killer available in Nigeria.',
+    q: `How fast does ${PRODUCT_NAME} kill bedbugs in Lagos?`,
+    a: `${PRODUCT_NAME} delivers instant knockdown on contact — bedbugs die within seconds of being sprayed in any Lagos home. The residual formula continues killing survivors and newly hatched eggs for 3+ days after application, making it the fastest bedbug killer available in Nigeria.`,
   },
   {
-    q: 'Is LESEKESE safe to use in bedrooms with children and pets?',
-    a: 'Yes. After spraying, leave the room ventilated for 30–45 minutes before re-entry. LESEKESE has a mild odour — not harsh like SNIPER — and leaves no greasy residue. It is formulated for residential bedrooms across Lagos and Nigeria, not just industrial use.',
+    q: `Is ${PRODUCT_NAME} safe to use in bedrooms with children and pets?`,
+    a: `Yes. After spraying, leave the room ventilated for 30–45 minutes before re-entry. ${PRODUCT_NAME} has a mild odour — not harsh like SNIPER — and leaves no greasy residue. It is formulated for residential bedrooms across Lagos and Nigeria, not just industrial use.`,
   },
   {
-    q: 'Does LESEKESE kill bedbug eggs too?',
-    a: 'Yes. LESEKESE disrupts the outer waxy membrane of bedbug eggs and dehydrates larvae on contact. For severe infestations common in Lagos apartments, repeat the treatment after 7–10 days to eliminate any newly hatched nymphs.',
+    q: `Does ${PRODUCT_NAME} kill bedbug eggs too?`,
+    a: `Yes. ${PRODUCT_NAME} disrupts the outer waxy membrane of bedbug eggs and dehydrates larvae on contact. For severe infestations common in Lagos apartments, repeat the treatment after 7–10 days to eliminate any newly hatched nymphs.`,
   },
   {
     q: 'How many bottles do I need for my Lagos apartment?',
@@ -155,7 +158,7 @@ function useCountdown() {
 
 function buildWaLink(pkg: (typeof PACKAGES)[number]) {
   const msg = encodeURIComponent(
-    `Hello! I want to order the LESEKESE INSTANT KILLER *${pkg.label} Pack* — ${pkg.qty} bottle${pkg.qty > 1 ? 's' : ''} (500ml) for ₦${pkg.price.toLocaleString()}. Please confirm my order and delivery details.`
+    `Hello! I want to order the Lesekese Bedbugs and Cockroaches Instant Killer *${pkg.label} Pack* — ${pkg.qty} bottle${pkg.qty > 1 ? 's' : ''} (500ml) for ₦${pkg.price.toLocaleString()}. Please confirm my order and delivery details.`
   );
   return `https://wa.me/${WA_NUMBER}?text=${msg}`;
 }
@@ -189,7 +192,7 @@ function useLandingSeo() {
   useEffect(() => {
     const prev = { title: document.title };
 
-    document.title = 'Buy LESEKESE Bedbug & Cockroach Killer in Lagos Nigeria | Instant Insecticide ₦9,000';
+    document.title = `Buy ${PRODUCT_NAME} in Lagos Nigeria | Instant Insecticide ₦9,000`;
 
     const setMeta = (attr: string, key: string, content: string) => {
       let el = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -201,21 +204,21 @@ function useLandingSeo() {
       el.setAttribute('content', content);
     };
 
-    setMeta('name', 'description', 'Buy LESEKESE Instant Killer — Nigeria\'s #1 bedbug and cockroach insecticide in Lagos. Kills bedbugs, eggs & cockroaches on contact with 3+ days residual protection. Order via WhatsApp for nationwide delivery. Starting ₦9,000.');
-    setMeta('name', 'keywords', 'bedbug killer Nigeria, cockroach killer Lagos, buy insecticide online Nigeria, bedbug spray Lagos, LESEKESE insecticide, pest control product Nigeria, instant bedbug killer, bedbug treatment Lagos, cockroach spray Nigeria, fumigation alternative Nigeria, bedbug killer price Nigeria, best bedbug killer in Nigeria, how to kill bedbugs Lagos, buy bedbug killer online Lagos, household insecticide Nigeria');
+    setMeta('name', 'description', `Buy ${PRODUCT_NAME} — Nigeria's #1 bedbug and cockroach insecticide in Lagos. Kills bedbugs, eggs & cockroaches on contact with 3+ days residual protection. Order via WhatsApp for nationwide delivery. Starting ₦9,000.`);
+    setMeta('name', 'keywords', 'bedbug killer Nigeria, cockroach killer Lagos, buy insecticide online Nigeria, bedbug spray Lagos, Lesekese insecticide, pest control product Nigeria, instant bedbug killer, bedbug treatment Lagos, cockroach spray Nigeria, fumigation alternative Nigeria, bedbug killer price Nigeria, best bedbug killer in Nigeria, how to kill bedbugs Lagos, buy bedbug killer online Lagos, household insecticide Nigeria');
     setMeta('name', 'geo.region', 'NG-LA');
     setMeta('name', 'geo.placename', 'Lagos');
     setMeta('name', 'geo.position', '6.5244;3.3792');
     setMeta('name', 'ICBM', '6.5244, 3.3792');
 
-    setMeta('property', 'og:title', 'Buy LESEKESE Bedbug & Cockroach Killer in Lagos Nigeria | Instant Insecticide');
-    setMeta('property', 'og:description', 'Nigeria\'s #1 instant bedbug and cockroach killer. Kills on contact with 3+ days residual protection. Order via WhatsApp — nationwide delivery from Lagos. Packages from ₦9,000.');
+    setMeta('property', 'og:title', `Buy ${PRODUCT_NAME} in Lagos Nigeria | Instant Insecticide`);
+    setMeta('property', 'og:description', `Nigeria's #1 instant bedbug and cockroach killer. Kills on contact with 3+ days residual protection. Order via WhatsApp — nationwide delivery from Lagos. Packages from ₦9,000.`);
     setMeta('property', 'og:url', LANDING_URL);
     setMeta('property', 'og:type', 'product');
     setMeta('property', 'og:image', HERO_IMG);
 
-    setMeta('name', 'twitter:title', 'Buy LESEKESE Bedbug & Cockroach Killer in Lagos Nigeria');
-    setMeta('name', 'twitter:description', 'Nigeria\'s #1 instant bedbug and cockroach killer. Kills on contact. Order via WhatsApp — nationwide delivery. Packages from ₦9,000.');
+    setMeta('name', 'twitter:title', `Buy ${PRODUCT_NAME} in Lagos Nigeria`);
+    setMeta('name', 'twitter:description', `Nigeria's #1 instant bedbug and cockroach killer. Kills on contact. Order via WhatsApp — nationwide delivery. Packages from ₦9,000.`);
     setMeta('name', 'twitter:image', HERO_IMG);
 
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
@@ -272,9 +275,9 @@ export function LandingPage() {
               {
                 '@type': 'Product',
                 '@id': `${LANDING_URL}#product`,
-                name: 'LESEKESE Instant Killer — Bedbug & Cockroach Insecticide',
-                description: 'LESEKESE Instant Killer is Nigeria\'s fast-acting insecticide for bedbugs, cockroaches, mosquitoes and household pests. Kills on contact with 3+ days residual protection. Available in 500ml bottles with nationwide delivery from Lagos.',
-                brand: { '@type': 'Brand', name: 'LESEKESE' },
+                name: `${PRODUCT_NAME} — Bedbug & Cockroach Insecticide`,
+                description: `${PRODUCT_NAME} is Nigeria's fast-acting insecticide for bedbugs, cockroaches, mosquitoes and household pests. Kills on contact with 3+ days residual protection. Available in 500ml bottles with nationwide delivery from Lagos.`,
+                brand: { '@type': 'Brand', name: BRAND_NAME },
                 category: 'Insecticide / Pest Control',
                 image: HERO_IMG,
                 offers: PACKAGES.map((pkg) => ({
@@ -317,8 +320,8 @@ export function LandingPage() {
               {
                 '@type': 'HowTo',
                 '@id': `${LANDING_URL}#howto`,
-                name: 'How to Use LESEKESE Instant Killer — 4 Easy Steps',
-                description: 'Learn how to apply LESEKESE insecticide to eliminate bedbugs and cockroaches from your home in 4 simple steps.',
+                name: `How to Use ${PRODUCT_NAME} — 4 Easy Steps`,
+                description: `Learn how to apply ${PRODUCT_NAME} to eliminate bedbugs and cockroaches from your home in 4 simple steps.`,
                 totalTime: 'PT45M',
                 step: [
                   { '@type': 'HowToStep', position: 1, name: 'Remove People & Pets', text: 'Clear the room of children, pets and food items before you start spraying.' },
@@ -334,13 +337,13 @@ export function LandingPage() {
       {/* ── ANNOUNCEMENT BAR ────────────────────────────────────────────── */}
       <div className="bg-red-600 text-white text-center py-2 px-4 text-xs sm:text-sm font-bold tracking-wide flex items-center justify-center gap-2">
         <Flame className="w-3.5 h-3.5 animate-pulse shrink-0" />
-        <span>🚨 LIMITED STOCK — LESEKESE INSTANT KILLER — Nigeria&apos;s #1 Bedbug &amp; Cockroach Solution</span>
+        <span>🚨 LIMITED STOCK — {PRODUCT_NAME} — Nigeria&apos;s #1 Bedbug &amp; Cockroach Solution</span>
         <Flame className="w-3.5 h-3.5 animate-pulse shrink-0" />
       </div>
 
       {/* ── LOGO HEADER ─────────────────────────────────────────────────── */}
       <header className="flex justify-center py-4 px-4 border-b border-white/5 bg-[#080d0a]">
-        <img src={LOGO_URL} alt="LESEKESE Products" className="h-14 w-auto rounded-lg object-contain" />
+        <img src={LOGO_URL} alt={`${BRAND_NAME} Products`} className="h-14 w-auto rounded-lg object-contain" />
       </header>
 
       {/* ── HERO SECTION ────────────────────────────────────────────────── */}
@@ -359,12 +362,14 @@ export function LandingPage() {
                 <h1 className="text-3xl md:text-5xl font-black leading-tight mb-4 text-white">
                   Nigeria&apos;s #1{' '}
                   <span className="text-red-500">Bedbug &amp; Cockroach Instant Killer</span>{' '}
-                  — Buy LESEKESE in Lagos &amp; Nationwide
+                  <span className="font-normal">
+                    — Buy {PRODUCT_NAME} in Lagos &amp; Nationwide
+                  </span>
                 </h1>
               </FadeIn>
               <FadeIn delay={0.14}>
                 <p className="text-slate-300 text-base md:text-lg mb-6 leading-relaxed">
-                  LESEKESE INSTANT KILLER works in <strong className="text-white">seconds</strong> — not hours. Kills bedbugs, nymphs,
+                  {PRODUCT_NAME} works in <strong className="text-white">seconds</strong> — not hours. Kills bedbugs, nymphs,
                   eggs, cockroaches, mosquitoes and more.{' '}
                   <strong className="text-amber-400">3+ days residual protection</strong> so they can&apos;t come back.
                 </p>
@@ -403,7 +408,7 @@ export function LandingPage() {
                 <div className="absolute inset-0 bg-red-600/20 rounded-full blur-3xl scale-90" />
                 <img
                   src={HERO_IMG}
-                  alt="LESEKESE 500ml Instant Killer bottles"
+                  alt={`${PRODUCT_NAME} 500ml bottles`}
                   className="relative w-full max-w-xs md:max-w-sm mx-auto drop-shadow-2xl"
                 />
               </div>
@@ -564,7 +569,7 @@ export function LandingPage() {
               </span>
               <h2 className="text-2xl md:text-4xl font-black text-white leading-tight">
                 Introducing{' '}
-                <span className="text-red-500">LESEKESE Instant Killer</span> —<br />
+                <span className="text-red-500">{PRODUCT_NAME}</span> —<br />
                 The Best Bedbug &amp; Cockroach Insecticide in Nigeria
               </h2>
             </div>
@@ -575,7 +580,7 @@ export function LandingPage() {
                 <div className="absolute -inset-3 bg-green-600/10 rounded-3xl blur-2xl" />
                 <img
                   src="https://i.ibb.co/2Y7xDvx7/Lesekese-banners-1.jpg"
-                  alt="LESEKESE Instant Killer — kills bedbugs and cockroaches"
+                  alt={`${PRODUCT_NAME} — kills bedbugs and cockroaches`}
                   className="relative w-full rounded-2xl shadow-2xl border border-green-500/20 object-cover"
                 />
               </div>
@@ -609,7 +614,7 @@ export function LandingPage() {
                     color: 'text-green-400',
                     bg: 'bg-green-500/10',
                     label: 'Kills ALL Life Stages',
-                    body: 'Adults, nymphs, eggs, larvae — LESEKESE eliminates the entire bedbug lifecycle.',
+                    body: `Adults, nymphs, eggs, larvae — ${PRODUCT_NAME} eliminates the entire bedbug lifecycle.`,
                   },
                   {
                     icon: Package,
@@ -643,7 +648,7 @@ export function LandingPage() {
           <FadeIn>
             <div className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
-                5,000+ Lagos &amp; Nigeria Families Trust LESEKESE for Bedbug Treatment
+                5,000+ Lagos &amp; Nigeria Families Trust {PRODUCT_NAME} for Bedbug Treatment
               </h2>
               <p className="text-slate-400 text-sm">Real customers across Lagos, Abuja, Enugu &amp; Port Harcourt. Zero paid reviews.</p>
             </div>
@@ -675,7 +680,7 @@ export function LandingPage() {
           <FadeIn>
             <div className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
-                How to Use LESEKESE — 4 Easy Steps to a <span className="text-green-400">Bug-Free Home</span>
+                How to Use {PRODUCT_NAME} — 4 Easy Steps to a <span className="text-green-400">Bug-Free Home</span>
               </h2>
               <p className="text-slate-400 text-sm">No professional fumigator needed. Anyone in Lagos can do this in one afternoon.</p>
             </div>
@@ -728,7 +733,7 @@ export function LandingPage() {
                 <div className="absolute -inset-4 bg-green-600/15 rounded-3xl blur-2xl" />
                 <img
                   src="https://i.ibb.co/0yHDP6L1/Chat-GPT-Image-Sep-10-2026-01-17-27-PM.png"
-                  alt="How to use LESEKESE — application steps"
+                  alt={`How to use ${PRODUCT_NAME} — application steps`}
                   className="relative w-full rounded-2xl object-cover shadow-2xl border border-green-500/20"
                 />
               </div>
@@ -746,7 +751,7 @@ export function LandingPage() {
                 🔥 Limited Time Promo Price
               </span>
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
-                LESEKESE Price in Nigeria — Choose Your Package &amp; Order via WhatsApp
+                {PRODUCT_NAME} Price in Nigeria — Choose Your Package &amp; Order via WhatsApp
               </h2>
               <p className="text-slate-400 text-sm">
                 Pay on Delivery available in Lagos. Fast nationwide shipping across Nigeria 🚚
@@ -797,7 +802,7 @@ export function LandingPage() {
 
                     <div className="space-y-1.5">
                       {[
-                        `${pkg.qty} × LESEKESE 500ml Bottle${pkg.qty > 1 ? 's' : ''}`,
+                        `${pkg.qty} × ${PRODUCT_NAME} 500ml Bottle${pkg.qty > 1 ? 's' : ''}`,
                         'Kills Bedbugs on Contact',
                         '3-Day Residual Protection',
                         pkg.qty >= 3 ? '✅ Full Apartment Fumigation' : '✅ Room-by-Room Treatment',
@@ -857,7 +862,7 @@ export function LandingPage() {
                 🛒 Place Your Order
               </span>
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
-                Buy LESEKESE Now — Pay on Delivery in Lagos
+                Buy {PRODUCT_NAME} Now — Pay on Delivery in Lagos
               </h2>
               <p className="text-slate-400 text-sm">
                 Select your package and we&apos;ll confirm your order via WhatsApp within minutes. Nationwide delivery.
@@ -931,7 +936,7 @@ export function LandingPage() {
                 <div>
                   <p className="text-green-400 font-bold text-xs">Satisfaction Guaranteed</p>
                   <p className="text-slate-400 text-xs leading-relaxed">
-                    If LESEKESE doesn&apos;t work as described, contact us within 7 days and we&apos;ll make it right.
+                    If {PRODUCT_NAME} doesn&apos;t work as described, contact us within 7 days and we&apos;ll make it right.
                     Zero risk to you.
                   </p>
                 </div>
@@ -946,7 +951,7 @@ export function LandingPage() {
         <div className="max-w-2xl mx-auto">
           <FadeIn>
             <h2 className="text-2xl md:text-3xl font-black text-white text-center mb-8">
-              Frequently Asked Questions — LESEKESE Nigeria
+              Frequently Asked Questions — {PRODUCT_NAME} Nigeria
             </h2>
           </FadeIn>
           <div className="space-y-3">
@@ -996,11 +1001,11 @@ export function LandingPage() {
             </h2>
             <img
               src="https://i.ibb.co/Ng2yGrMW/Chat-GPT-Image-Sep-10-2026-01-35-08-PM.png"
-              alt="Stop sleeping with bedbugs — order LESEKESE now"
+              alt={`Stop sleeping with bedbugs — order ${PRODUCT_NAME} now`}
               className="w-full max-w-lg mx-auto rounded-2xl object-cover shadow-2xl border border-red-500/20 mb-6"
             />
             <p className="text-slate-300 text-base mb-8 leading-relaxed">
-              Every night you wait is another night of bites, itching, and shame. LESEKESE is in stock{' '}
+              Every night you wait is another night of bites, itching, and shame. {PRODUCT_NAME} is in stock{' '}
               <strong className="text-amber-400">right now</strong> — but promo pricing ends at midnight.
               Order in the next few minutes and stop the suffering today.
             </p>
