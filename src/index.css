@@ -116,9 +116,9 @@
   background: #dc2626;
 }
 
-/* Mobile: scale rem-based font sizes sitewide */
+/* Mobile: scale rem-based font sizes sitewide +20% */
 @media (max-width: 767px) {
   html {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
