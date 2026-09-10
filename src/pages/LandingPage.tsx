@@ -1216,10 +1216,10 @@ export function LandingPage() {
           <MessageCircle className="w-4 h-4" /> Order via WhatsApp
         </a>
         <a
-          href={`tel:${PHONE_NUMBER}`}
-          className="flex items-center justify-center px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white active:scale-95 transition-transform"
+          href={`sms:+2348023725740?body=${encodeURIComponent(`Hi! I want to order ${PRODUCT_NAME}. Please confirm availability and delivery details.`)}`}
+          className="flex-1 flex items-center justify-center gap-2 bg-amber-500 text-white font-black text-sm py-3 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.3)] active:scale-95 transition-transform"
         >
-          <Phone className="w-4 h-4" />
+          <MessageSquare className="w-4 h-4" /> Order via SMS
         </a>
       </div>
 
