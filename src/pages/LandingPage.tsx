@@ -19,7 +19,8 @@ import {
   Package,
 } from 'lucide-react';
 
-const HERO_IMG = 'https://i.ibb.co/G3B8BJpd/Buy-Lesekese-Bedbugs-and-Cockroaches-Instant-Killer-1.png';
+const HERO_IMG = 'https://i.ibb.co/B23957FQ/Buy-Lesekese-Bedbugs-and-Cockroaches-Instant-Killer-3-1.png';
+const SHARE_IMG = 'https://i.ibb.co/3m6SSFYM/Buy-Lesekese-Bedbugs-and-Cockroaches-Instant-Killer.jpg';
 const BOTTLE_IMG = 'https://i.ibb.co/3yKmDdjr/Lesekese.png';
 const LOGO_URL = 'https://i.ibb.co/zhWkB5Fh/LESEKESE.jpg';
 
@@ -216,11 +217,11 @@ function useLandingSeo() {
     setMeta('property', 'og:description', `Nigeria's #1 instant bedbug and cockroach killer. Kills on contact with 3+ days residual protection. Order via WhatsApp — nationwide delivery from Lagos. Packages from ₦9,000.`);
     setMeta('property', 'og:url', LANDING_URL);
     setMeta('property', 'og:type', 'product');
-    setMeta('property', 'og:image', HERO_IMG);
+    setMeta('property', 'og:image', SHARE_IMG);
 
     setMeta('name', 'twitter:title', `Buy ${PRODUCT_NAME} in Lagos Nigeria`);
     setMeta('name', 'twitter:description', `Nigeria's #1 instant bedbug and cockroach killer. Kills on contact. Order via WhatsApp — nationwide delivery. Packages from ₦9,000.`);
-    setMeta('name', 'twitter:image', HERO_IMG);
+    setMeta('name', 'twitter:image', SHARE_IMG);
 
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!canonical) {
@@ -243,7 +244,9 @@ export function LandingPage() {
   const [selectedPkg, setSelectedPkg] = useState<string>('pkg-2');
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryState, setDeliveryState] = useState('');
+  const [deliveryCity, setDeliveryCity] = useState('');
+  const [deliveryStreet, setDeliveryStreet] = useState('');
   const [formError, setFormError] = useState('');
   const [smsSending, setSmsSending] = useState(false);
   const [smsSent, setSmsSent] = useState(false);
@@ -259,14 +262,18 @@ export function LandingPage() {
 
   const selectedPackage = PACKAGES.find((p) => p.id === selectedPkg) ?? PACKAGES[1];
 
+  const formValid = fullName.trim() && phoneNumber.trim() && deliveryState.trim() && deliveryCity.trim() && deliveryStreet.trim();
+
   const buildOrderWaLink = () => {
+    const pkg = selectedPackage;
+    const address = `${deliveryStreet.trim()}, ${deliveryCity.trim()}, ${deliveryState.trim()}`;
     const msg = encodeURIComponent(
       `NEW ORDER — ${PRODUCT_NAME}\n\n` +
-        `*Package:* ${selectedPackage.label} Pack (${selectedPackage.qty} bottle${selectedPackage.qty > 1 ? 's' : ''} × 500ml)\n` +
-        `*Price:* ₦${selectedPackage.price.toLocaleString()}\n\n` +
+        `*Package:* ${pkg.label} Pack (${pkg.qty} bottle${pkg.qty > 1 ? 's' : ''} × 500ml)\n` +
+        `*Price:* ₦${pkg.price.toLocaleString()}\n\n` +
         `*Full Name:* ${fullName.trim()}\n` +
         `*Phone Number:* ${phoneNumber.trim()}\n` +
-        `*Delivery Address:* ${deliveryAddress.trim()}\n\n` +
+        `*Delivery Address:* ${address}\n\n` +
         `Please confirm my order and delivery details.`
     );
     return `https://wa.me/${WA_NUMBER}?text=${msg}`;
@@ -274,8 +281,8 @@ export function LandingPage() {
 
   const handleSendOrder = (e: FormEvent) => {
     e.preventDefault();
-    if (!fullName.trim() || !phoneNumber.trim() || !deliveryAddress.trim()) {
-      setFormError('Please fill in your full name, phone number and delivery address.');
+    if (!formValid) {
+      setFormError('All fields are required — package, full name, phone number, state, city and address.');
       return;
     }
     setFormError('');
@@ -284,21 +291,22 @@ export function LandingPage() {
 
   const buildSmsContent = () => {
     const pkg = selectedPackage;
+    const address = `${deliveryStreet.trim()}, ${deliveryCity.trim()}, ${deliveryState.trim()}`;
     return (
       `NEW ORDER — ${PRODUCT_NAME}\n\n` +
       `Package: ${pkg.label} Pack (${pkg.qty} bottle${pkg.qty > 1 ? 's' : ''} × 500ml)\n` +
       `Price: ₦${pkg.price.toLocaleString()}\n\n` +
       `Full Name: ${fullName.trim()}\n` +
       `Phone Number: ${phoneNumber.trim()}\n` +
-      `Delivery Address: ${deliveryAddress.trim()}\n\n` +
+      `Delivery Address: ${address}\n\n` +
       `Please confirm my order and delivery details.`
     );
   };
 
   const handleSendSms = async (e: FormEvent) => {
     e.preventDefault();
-    if (!fullName.trim() || !phoneNumber.trim() || !deliveryAddress.trim()) {
-      setFormError('Please fill in your full name, phone number and delivery address.');
+    if (!formValid) {
+      setFormError('All fields are required — package, full name, phone number, state, city and address.');
       return;
     }
     setFormError('');
@@ -469,20 +477,18 @@ export function LandingPage() {
               </FadeIn>
               <FadeIn delay={0.22}>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <a
-                    href={buildWaLink(PACKAGES[1])}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white font-black text-sm px-6 py-3 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.3)] transition-all duration-200 hover:scale-[1.03] active:scale-95"
+                  <button
+                    onClick={scrollToOrder}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white font-black text-sm px-6 py-3 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.3)] transition-all duration-200 hover:scale-[1.03] active:scale-95 cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4" /> Order on WhatsApp
-                  </a>
-                  <a
-                    href={`sms:+2348023725740?body=${encodeURIComponent(`Hi! I want to order ${PRODUCT_NAME}. Please confirm availability and delivery details.`)}`}
-                    className="flex-1 inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-black text-sm px-6 py-3 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all duration-200 hover:scale-[1.03] active:scale-95"
+                  </button>
+                  <button
+                    onClick={scrollToOrder}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-black text-sm px-6 py-3 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all duration-200 hover:scale-[1.03] active:scale-95 cursor-pointer"
                   >
                     <MessageSquare className="w-4 h-4" /> Order via SMS
-                  </a>
+                  </button>
                 </div>
                 <p className="text-xs text-slate-500 mt-2 ml-1">⚡ Fast Delivery · Pay on Delivery Available in Lagos</p>
               </FadeIn>
@@ -584,7 +590,7 @@ export function LandingPage() {
               <div className="relative w-full max-w-sm md:max-w-none">
                 <div className="absolute -inset-4 bg-red-600/15 rounded-3xl blur-2xl" />
                 <img
-                  src="https://i.ibb.co/GQgWCVGz/Chat-GPT-Image-Sep-10-2026-12-48-22-PM.png"
+                  src="https://i.ibb.co/tpt3Gp1V/Chat-GPT-Image-Sep-11-2026-12-58-57-AM-1.png"
                   alt="Bedbug and cockroach infestation in a Nigerian home"
                   className="relative w-full rounded-2xl object-cover shadow-2xl border border-red-500/20"
                 />
@@ -666,13 +672,17 @@ export function LandingPage() {
           </FadeIn>
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <FadeIn className="flex justify-center">
-              <div className="relative w-full">
+              <div className="relative w-full max-w-sm mx-auto">
                 <div className="absolute -inset-3 bg-green-600/10 rounded-3xl blur-2xl" />
-                <img
-                  src="https://i.ibb.co/2Y7xDvx7/Lesekese-banners-1.jpg"
-                  alt={`${PRODUCT_NAME} — kills bedbugs and cockroaches`}
-                  className="relative w-full rounded-2xl shadow-2xl border border-green-500/20 object-cover"
-                />
+                <div className="relative w-full aspect-[9/16] max-h-[70vh] rounded-2xl overflow-hidden shadow-2xl border border-green-500/20 bg-black">
+                  <iframe
+                    src="https://www.youtube.com/embed/TdwVGgQlyM8?autoplay=1&mute=1&loop=1&playlist=TdwVGgQlyM8&controls=0&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&disablekb=1"
+                    title={`${PRODUCT_NAME} — watch it kill bedbugs and cockroaches`}
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-[122%]"
+                  />
+                </div>
               </div>
             </FadeIn>
             <FadeIn delay={0.1}>
@@ -822,7 +832,7 @@ export function LandingPage() {
               <div className="relative w-full max-w-sm md:max-w-none">
                 <div className="absolute -inset-4 bg-green-600/15 rounded-3xl blur-2xl" />
                 <img
-                  src="https://i.ibb.co/0yHDP6L1/Chat-GPT-Image-Sep-10-2026-01-17-27-PM.png"
+                  src="https://i.ibb.co/3m6SSFYM/Buy-Lesekese-Bedbugs-and-Cockroaches-Instant-Killer.jpg"
                   alt={`How to use ${PRODUCT_NAME} — application steps`}
                   className="relative w-full rounded-2xl object-cover shadow-2xl border border-green-500/20"
                 />
@@ -905,11 +915,10 @@ export function LandingPage() {
                       ))}
                     </div>
 
-                    <a
-                      href={buildWaLink(pkg)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`mt-auto w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-black text-sm transition-all duration-200 hover:scale-[1.03] active:scale-95 ${
+                    <button
+                      type="button"
+                      onClick={() => { setSelectedPkg(pkg.id); scrollToOrder(); }}
+                      className={`mt-auto w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-black text-sm transition-all duration-200 hover:scale-[1.03] active:scale-95 cursor-pointer ${
                         pkg.highlight
                           ? 'bg-red-600 hover:bg-red-500 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]'
                           : 'bg-white/10 hover:bg-white/15 text-white border border-white/10'
@@ -917,7 +926,7 @@ export function LandingPage() {
                     >
                       <MessageCircle className="w-4 h-4" />
                       Order on WhatsApp
-                    </a>
+                    </button>
                   </div>
                 </div>
               </FadeIn>
@@ -966,7 +975,9 @@ export function LandingPage() {
               <form onSubmit={handleSendOrder} className="space-y-5">
                 {/* Package selector */}
                 <div>
-                  <label className="block text-white font-bold text-sm mb-2">Select Your Package</label>
+                  <label className="block text-white font-bold text-sm mb-2">
+                    Select Your Package <span className="text-red-400">*</span>
+                  </label>
                   <div className="grid grid-cols-2 gap-2">
                     {PACKAGES.map((pkg) => (
                       <button
@@ -991,7 +1002,7 @@ export function LandingPage() {
                 {/* Full name */}
                 <div>
                   <label htmlFor="order-name" className="block text-white font-bold text-sm mb-2">
-                    Full Name
+                    Full Name <span className="text-red-400">*</span>
                   </label>
                   <input
                     id="order-name"
@@ -1006,7 +1017,7 @@ export function LandingPage() {
                 {/* Phone number */}
                 <div>
                   <label htmlFor="order-phone" className="block text-white font-bold text-sm mb-2">
-                    Phone Number
+                    Phone Number <span className="text-red-400">*</span>
                   </label>
                   <input
                     id="order-phone"
@@ -1020,16 +1031,47 @@ export function LandingPage() {
 
                 {/* Delivery address */}
                 <div>
-                  <label htmlFor="order-address" className="block text-white font-bold text-sm mb-2">
+                  <label className="block text-white font-bold text-sm mb-2">
                     Delivery Address
                   </label>
-                  <textarea
+                  <div className="grid grid-cols-2 gap-2 mb-2">
+                    <div>
+                      <label htmlFor="order-state" className="block text-slate-400 text-xs mb-1">
+                        State <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        id="order-state"
+                        type="text"
+                        value={deliveryState}
+                        onChange={(e) => setDeliveryState(e.target.value)}
+                        placeholder="e.g. Lagos"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/30 transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="order-city" className="block text-slate-400 text-xs mb-1">
+                        City <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        id="order-city"
+                        type="text"
+                        value={deliveryCity}
+                        onChange={(e) => setDeliveryCity(e.target.value)}
+                        placeholder="e.g. Ikeja"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/30 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <label htmlFor="order-address" className="block text-slate-400 text-xs mb-1">
+                    Street Address <span className="text-red-400">*</span>
+                  </label>
+                  <input
                     id="order-address"
-                    rows={2}
-                    value={deliveryAddress}
-                    onChange={(e) => setDeliveryAddress(e.target.value)}
-                    placeholder="e.g. No. 12 Adebayo Street, Ikeja, Lagos"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/30 transition-all resize-none"
+                    type="text"
+                    value={deliveryStreet}
+                    onChange={(e) => setDeliveryStreet(e.target.value)}
+                    placeholder="e.g. No. 12 Adebayo Street"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/30 transition-all"
                   />
                 </div>
 
@@ -1164,7 +1206,7 @@ export function LandingPage() {
               Don&apos;t Sleep With Bedbugs in Lagos One More Night
             </h2>
             <img
-              src="https://i.ibb.co/Ng2yGrMW/Chat-GPT-Image-Sep-10-2026-01-35-08-PM.png"
+              src="https://i.ibb.co/dJQ2rXSC/Buy-Lesekese-Bedbugs-and-Cockroaches-Instant-Killer-1.jpg"
               alt={`Stop sleeping with bedbugs — order ${PRODUCT_NAME} now`}
               className="w-full max-w-lg mx-auto rounded-2xl object-cover shadow-2xl border border-red-500/20 mb-6"
             />
@@ -1176,15 +1218,13 @@ export function LandingPage() {
           </FadeIn>
           <FadeIn delay={0.1}>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href={buildWaLink(PACKAGES[1])}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white font-black text-lg px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all duration-200 hover:scale-[1.03] active:scale-95 fire-glow"
+              <button
+                onClick={scrollToOrder}
+                className="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white font-black text-lg px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all duration-200 hover:scale-[1.03] active:scale-95 fire-glow cursor-pointer"
               >
                 <MessageCircle className="w-5 h-5" />
-                ORDER NOW — WhatsApp
-              </a>
+                ORDER NOW
+              </button>
               <a
                 href={`tel:${PHONE_NUMBER}`}
                 className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-base px-6 py-4 rounded-2xl transition-all"
@@ -1206,21 +1246,19 @@ export function LandingPage() {
       </section>
 
       {/* ── STICKY MOBILE CTA ───────────────────────────────────────────── */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-slate-950/95 backdrop-blur border-t border-slate-800 p-3 flex gap-2">
-        <a
-          href={buildWaLink(PACKAGES[1])}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 bg-red-600 text-white font-black text-sm py-3 rounded-xl shadow-[0_0_15px_rgba(220,38,38,0.4)] active:scale-95 transition-transform"
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-slate-950/95 backdrop-blur border-t border-slate-800 px-3 py-2 flex gap-2">
+        <button
+          onClick={scrollToOrder}
+          className="flex-1 flex items-center justify-center gap-1.5 bg-red-600 text-white font-bold text-xs py-2.5 rounded-lg shadow-[0_0_12px_rgba(220,38,38,0.3)] active:scale-95 transition-transform cursor-pointer"
         >
-          <MessageCircle className="w-4 h-4" /> Order via WhatsApp
-        </a>
-        <a
-          href={`sms:+2348023725740?body=${encodeURIComponent(`Hi! I want to order ${PRODUCT_NAME}. Please confirm availability and delivery details.`)}`}
-          className="flex-1 flex items-center justify-center gap-2 bg-amber-500 text-white font-black text-sm py-3 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.3)] active:scale-95 transition-transform"
+          <MessageCircle className="w-3.5 h-3.5" /> Order Now
+        </button>
+        <button
+          onClick={scrollToOrder}
+          className="flex-1 flex items-center justify-center gap-1.5 bg-amber-500 text-white font-bold text-xs py-2.5 rounded-lg shadow-[0_0_12px_rgba(245,158,11,0.25)] active:scale-95 transition-transform cursor-pointer"
         >
-          <MessageSquare className="w-4 h-4" /> Order via SMS
-        </a>
+          <MessageSquare className="w-3.5 h-3.5" /> SMS Order
+        </button>
       </div>
 
       {/* Bottom padding for mobile sticky bar */}
