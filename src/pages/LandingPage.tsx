@@ -5,6 +5,8 @@ import {
   XCircle,
   Star,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Phone,
   MessageCircle,
   MessageSquare,
@@ -21,6 +23,11 @@ import {
 
 const HERO_IMG = 'https://i.ibb.co/B23957FQ/Buy-Lesekese-Bedbugs-and-Cockroaches-Instant-Killer-3-1.png';
 const SHARE_IMG = 'https://i.ibb.co/3m6SSFYM/Buy-Lesekese-Bedbugs-and-Cockroaches-Instant-Killer.jpg';
+
+const REVEAL_IMAGES = [
+  'https://i.ibb.co/WpB1vj8X/Whats-App-Image-2026-09-10-at-1-44-50-PM.jpg',
+  'https://i.ibb.co/ZR7jX6Kr/Whats-App-Image-2026-09-10-at-1-44-49-PM.jpg',
+];
 const BOTTLE_IMG = 'https://i.ibb.co/3yKmDdjr/Lesekese.png';
 const LOGO_URL = 'https://i.ibb.co/zhWkB5Fh/LESEKESE.jpg';
 
@@ -241,6 +248,7 @@ export function LandingPage() {
   useLandingSeo();
 
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [revealIdx, setRevealIdx] = useState(0);
   const [selectedPkg, setSelectedPkg] = useState<string>('pkg-2');
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -253,6 +261,13 @@ export function LandingPage() {
   const [smsError, setSmsError] = useState('');
   const orderRef = useRef<HTMLDivElement>(null);
   const { h, m, s } = useCountdown();
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setRevealIdx((i) => (i + 1) % REVEAL_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
 
   const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -672,16 +687,52 @@ export function LandingPage() {
           </FadeIn>
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <FadeIn className="flex justify-center">
-              <div className="relative w-full max-w-sm mx-auto">
+              <div className="relative w-full">
                 <div className="absolute -inset-3 bg-green-600/10 rounded-3xl blur-2xl" />
-                <div className="relative w-full aspect-[9/16] max-h-[70vh] rounded-2xl overflow-hidden shadow-2xl border border-green-500/20 bg-black">
-                  <iframe
-                    src="https://www.youtube.com/embed/TdwVGgQlyM8?autoplay=1&mute=1&loop=1&playlist=TdwVGgQlyM8&controls=0&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&disablekb=1"
-                    title={`${PRODUCT_NAME} — watch it kill bedbugs and cockroaches`}
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                    className="absolute top-0 left-0 w-full h-[122%]"
-                  />
+                <div className="relative w-full aspect-[4/5] max-h-[70vh] rounded-2xl overflow-hidden shadow-2xl border border-green-500/20 bg-black">
+                  <AnimatePresence initial={false}>
+                    <motion.img
+                      key={revealIdx}
+                      src={REVEAL_IMAGES[revealIdx]}
+                      alt={`${PRODUCT_NAME} — kills bedbugs and cockroaches`}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.6 }}
+                    />
+                  </AnimatePresence>
+                  <button
+                    type="button"
+                    aria-label="Previous image"
+                    onClick={() =>
+                      setRevealIdx((revealIdx - 1 + REVEAL_IMAGES.length) % REVEAL_IMAGES.length)
+                    }
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next image"
+                    onClick={() => setRevealIdx((revealIdx + 1) % REVEAL_IMAGES.length)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+                    {REVEAL_IMAGES.map((_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        aria-label={`Go to image ${i + 1}`}
+                        onClick={() => setRevealIdx(i)}
+                        className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                          i === revealIdx ? 'w-6 bg-white' : 'w-1.5 bg-white/50'
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </FadeIn>
