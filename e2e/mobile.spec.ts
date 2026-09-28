@@ -17,15 +17,19 @@ test.describe('Mobile experience', () => {
     await menu.click();
 
     await expect(page).toHaveURL(/\/products$/);
-    await expect(page.locator('h1').filter({ hasText: /FAST-ACTING/i })).toBeVisible();
+    await expect(page.locator('h1').filter({ hasText: /ONE 500ML SIZE/i })).toBeVisible();
   });
 
-  test('order shortcut opens the quick checkout modal', async ({ page }) => {
+  test('order shortcut opens the Order Now form', async ({ page }) => {
     await page.goto('/');
+    // The navbar Order button is the "Order Now" destination, which opens the
+    // Formspree-backed form (WhatsApp/call/email are offered inside it).
     await page.getByRole('button', { name: 'Order', exact: true }).click();
 
     const modal = page.locator('.fixed.inset-0.z-50');
-    await expect(modal).toContainText('Quick Order / Instant Checkout');
+    await expect(modal).toContainText('Order Now');
+    await expect(modal.getByRole('link', { name: /Instant WhatsApp Checkout/i })).toBeVisible();
+    await expect(modal.getByRole('link', { name: /Call Dispatch Directly/i })).toBeVisible();
   });
 
   test('find store shortcut routes to the locator', async ({ page }) => {

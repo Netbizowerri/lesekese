@@ -3,7 +3,7 @@ import { Mail, PhoneCall, ShieldCheck, Flame } from 'lucide-react';
 
 interface ContactPageProps {
   onNavigate: (path: string) => void;
-  onOpenOrderModal: (sizeMl?: number) => void;
+  onOpenOrderModal: (productId?: string, bottleCount?: number) => void;
 }
 
 export function ContactPage({ onNavigate, onOpenOrderModal }: ContactPageProps) {

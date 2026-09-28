@@ -47,7 +47,7 @@ const PACKAGES = [
     id: 'pkg-1',
     label: 'Starter',
     qty: 1,
-    price: 9000,
+    price: 10000,
     badge: null as string | null,
     highlight: false,
     desc: 'Perfect for a 1-bedroom apartment. Kills bedbugs, eggs & cockroaches on contact.',
@@ -200,13 +200,13 @@ function FadeIn({
   );
 }
 
-const LANDING_URL = 'https://www.lesekeseproducts.com/lesekese-bedbugs-and-cockroaches-instant-killer';
+const LANDING_URL = 'https://lesekeseproducts.com/lesekese-bedbugs-and-cockroaches-instant-killer';
 
 function useLandingSeo() {
   useEffect(() => {
     const prev = { title: document.title };
 
-    document.title = `Buy ${PRODUCT_NAME} in Lagos Nigeria | Instant Insecticide ₦9,000`;
+    document.title = `Buy ${PRODUCT_NAME} in Lagos Nigeria | Instant Insecticide ₦10,000`;
 
     const setMeta = (attr: string, key: string, content: string) => {
       let el = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -218,7 +218,7 @@ function useLandingSeo() {
       el.setAttribute('content', content);
     };
 
-    setMeta('name', 'description', `Buy ${PRODUCT_NAME} — Nigeria's #1 bedbug and cockroach insecticide in Lagos. Kills bedbugs, eggs & cockroaches on contact with 3+ days residual protection. Order via WhatsApp for nationwide delivery. Starting ₦9,000.`);
+    setMeta('name', 'description', `Buy ${PRODUCT_NAME} — Nigeria's #1 bedbug and cockroach insecticide in Lagos. Kills bedbugs, eggs & cockroaches on contact with 3+ days residual protection. Order via WhatsApp for nationwide delivery. Starting ₦10,000.`);
     setMeta('name', 'keywords', 'bedbug killer Nigeria, cockroach killer Lagos, buy insecticide online Nigeria, bedbug spray Lagos, Lesekese insecticide, pest control product Nigeria, instant bedbug killer, bedbug treatment Lagos, cockroach spray Nigeria, fumigation alternative Nigeria, bedbug killer price Nigeria, best bedbug killer in Nigeria, how to kill bedbugs Lagos, buy bedbug killer online Lagos, household insecticide Nigeria');
     setMeta('name', 'geo.region', 'NG-LA');
     setMeta('name', 'geo.placename', 'Lagos');
@@ -226,13 +226,13 @@ function useLandingSeo() {
     setMeta('name', 'ICBM', '6.5244, 3.3792');
 
     setMeta('property', 'og:title', `Buy ${PRODUCT_NAME} in Lagos Nigeria | Instant Insecticide`);
-    setMeta('property', 'og:description', `Nigeria's #1 instant bedbug and cockroach killer. Kills on contact with 3+ days residual protection. Order via WhatsApp — nationwide delivery from Lagos. Packages from ₦9,000.`);
+    setMeta('property', 'og:description', `Nigeria's #1 instant bedbug and cockroach killer. Kills on contact with 3+ days residual protection. Order via WhatsApp — nationwide delivery from Lagos. Packages from ₦10,000.`);
     setMeta('property', 'og:url', LANDING_URL);
     setMeta('property', 'og:type', 'product');
     setMeta('property', 'og:image', SHARE_IMG);
 
     setMeta('name', 'twitter:title', `Buy ${PRODUCT_NAME} in Lagos Nigeria`);
-    setMeta('name', 'twitter:description', `Nigeria's #1 instant bedbug and cockroach killer. Kills on contact. Order via WhatsApp — nationwide delivery. Packages from ₦9,000.`);
+    setMeta('name', 'twitter:description', `Nigeria's #1 instant bedbug and cockroach killer. Kills on contact. Order via WhatsApp — nationwide delivery. Packages from ₦10,000.`);
     setMeta('name', 'twitter:image', SHARE_IMG);
 
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
@@ -403,7 +403,7 @@ export function LandingPage() {
                   priceCurrency: 'NGN',
                   availability: 'https://schema.org/InStock',
                   url: LANDING_URL,
-                  seller: { '@id': 'https://www.lesekeseproducts.com/#organization' },
+                  seller: { '@id': 'https://lesekeseproducts.com/#organization' },
                   priceValidUntil: '2026-12-31',
                   itemCondition: 'https://schema.org/NewCondition',
                   shippingDetails: {
@@ -956,7 +956,7 @@ export function LandingPage() {
                     <div className="my-1">
                       {pkg.savings && (
                         <p className="text-slate-500 line-through text-sm">
-                          ₦{(pkg.qty * 9000).toLocaleString()}
+                          ₦{(pkg.qty * PACKAGES[0].price).toLocaleString()}
                         </p>
                       )}
                       <p className="text-3xl font-black text-white">₦{pkg.price.toLocaleString()}</p>

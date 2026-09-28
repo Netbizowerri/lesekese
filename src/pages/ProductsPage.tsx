@@ -1,73 +1,186 @@
-import { useState } from 'react';
-import { PRODUCTS } from '../data/mockData';
+import {
+  BUNDLES,
+  HERO_IMAGE_URL,
+  INSTANT_KILLER_PRODUCT_ID,
+  PRODUCTS,
+  PRODUCT_IN_ACTION_IMAGE,
+  PRODUCT_IMAGE_MULTIPLE,
+  PRODUCT_IMAGE_SINGLE,
+  SEND_OFF_PRODUCT_ID,
+  priceForBottleCount
+} from '../data/mockData';
 import { ProductCard } from '../components/ProductCard';
-import { ProductBottleGraphic } from '../components/ProductBottleGraphic';
-import { CheckCircle2, Flame, ShieldCheck, Zap, ShoppingBag, Calculator } from 'lucide-react';
-import { motion } from 'motion/react';
+import { BundleCard } from '../components/BundleCard';
+import { Flame, Zap, Truck } from 'lucide-react';
 
 interface ProductsPageProps {
   onNavigate: (path: string) => void;
-  onOpenOrderModal: (sizeMl?: number) => void;
+  onOpenOrderModal: (productId?: string, bottleCount?: number) => void;
 }
 
-export function ProductsPage({ onNavigate, onOpenOrderModal }: ProductsPageProps) {
-  const [selectedSizeForComparison, setSelectedSizeForComparison] = useState<number>(500);
-  const [cartonQty, setCartonQty] = useState<number>(5);
+const BOTTLE_ML = 500;
 
+export function ProductsPage({ onNavigate, onOpenOrderModal }: ProductsPageProps) {
   const sprayProducts = PRODUCTS.filter((p) => p.productType !== 'powder');
   const powderProducts = PRODUCTS.filter((p) => p.productType === 'powder');
-  const selectedProduct = sprayProducts.find((p) => p.sizeMl === selectedSizeForComparison) || sprayProducts[0];
-  
-  // Bulk carton discount calculation: 24 bottles per carton
-  const bottlesPerCarton = 24;
-  const totalBottles = cartonQty * bottlesPerCarton;
-  const standardPrice = totalBottles * selectedProduct.priceNgn;
-  const wholesaleDiscountRate = cartonQty >= 10 ? 0.15 : cartonQty >= 5 ? 0.10 : 0.05;
-  const wholesaleTotal = standardPrice * (1 - wholesaleDiscountRate);
-  const savingsNgn = standardPrice - wholesaleTotal;
+  const instantKiller = sprayProducts.find((p) => p.id === INSTANT_KILLER_PRODUCT_ID) ?? sprayProducts[0];
 
   return (
     <div className="space-y-16 pt-28 sm:pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden rounded-3xl border border-brand shadow-2xl">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://i.ibb.co/j9VDxGwf/Lesekese-banners-5.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950/80 via-slate-900/60 to-slate-950/30" />
+      <section className="relative overflow-hidden rounded-3xl border border-brand shadow-2xl bg-slate-950">
+        <div className="absolute inset-0">
+          <img
+            src={HERO_IMAGE_URL}
+            alt=""
+            aria-hidden="true"
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-contain opacity-45"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-900/70 to-slate-950/40" />
         <div className="relative max-w-3xl mx-auto text-center space-y-4 px-6 py-20 md:py-28">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-950/50 backdrop-blur-md text-xs font-bold text-amber-300 uppercase tracking-widest border border-amber-400/40">
             <Flame className="w-4 h-4 text-amber-400" />
-            <span>LESEKESE® Official Product Catalog</span>
+            <span>LESEKESE® Official Pricing</span>
           </div>
           <h1 className="text-4xl sm:text-6xl font-display font-bold text-white tracking-tight drop-shadow-lg">
-            FAST-ACTING PEST KILLER SIZES
+            ONE 500ML SIZE. FOUR PRICES.
           </h1>
           <p className="text-sm sm:text-base text-slate-200 leading-relaxed drop-shadow">
-            Formulated for immediate knockdown of bedbugs, cockroaches, mosquitoes, and household pests with 3+ days active residual barrier.
+            We retired the 100ml and 250ml bottles. Every home now gets the full-strength 500ml —
+            so choose how many bottles your apartment needs, from ₦
+            {priceForBottleCount(1).toLocaleString()} up to ₦25,000.
           </p>
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+            {BUNDLES.map((tier) => (
+              <span
+                key={tier.id}
+                className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-white whitespace-nowrap"
+              >
+                {tier.bottles} × 500ml —{' '}
+                <span className="text-amber-300">₦{tier.priceNgn.toLocaleString()}</span>
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Spray Products Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {sprayProducts.map((prod) => (
+      {/* ================= SINGLE PRODUCT ================= */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="lg:col-span-5">
           <ProductCard
-            key={prod.id}
-            product={prod}
-            onOrder={(p) => onOpenOrderModal(p.sizeMl)}
+            product={instantKiller}
+            onOrder={() => onOpenOrderModal(INSTANT_KILLER_PRODUCT_ID, 2)}
             onLocateStore={() => onNavigate('/locations')}
           />
-        ))}
+        </div>
+
+        <div className="lg:col-span-7 space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {[
+              { src: PRODUCT_IMAGE_SINGLE, caption: 'Single 500ml bottle' },
+              { src: PRODUCT_IMAGE_MULTIPLE, caption: 'Bundled up to 5 bottles' }
+            ].map((img) => (
+              <div
+                key={img.src}
+                className="rounded-3xl border border-slate-200 bg-white/90 shadow-xl overflow-hidden group"
+              >
+                <div className="bg-slate-50 flex items-center justify-center p-3">
+                  <img
+                    src={img.src}
+                    alt={`LESEKESE Instant Killer 500ml — ${img.caption}`}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-auto object-contain max-h-72 group-hover:scale-[1.03] transition-transform duration-500 block"
+                  />
+                </div>
+                <p className="px-4 py-3 text-[11px] font-accent font-bold uppercase tracking-widest text-slate-500 border-t border-slate-100">
+                  {img.caption}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="rounded-3xl border border-slate-200 bg-white/90 shadow-xl overflow-hidden group">
+              <div className="bg-slate-50 flex items-center justify-center p-3">
+                <img
+                  src={PRODUCT_IN_ACTION_IMAGE}
+                  alt="LESEKESE Instant Killer in action"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  className="w-full h-auto object-contain max-h-64 group-hover:scale-[1.03] transition-transform duration-500 block"
+                />
+              </div>
+              <p className="px-4 py-3 text-[11px] font-accent font-bold uppercase tracking-widest text-red-600 border-t border-slate-100">
+                Kills on contact · 3-day residual
+              </p>
+            </div>
+
+            <div className="glass-card rounded-3xl border border-slate-200 p-6 space-y-3">
+              <span className="text-[11px] font-accent font-bold uppercase tracking-widest text-amber-600">
+                Product specification
+              </span>
+              <dl className="space-y-2 text-sm">
+                {[
+                  ['Volume', `${BOTTLE_ML}ml per bottle`],
+                  ['Active formula', instantKiller.sprayType],
+                  ['Residual protection', '3 days active shield'],
+                  ['Coverage', instantKiller.coverageArea],
+                  ['Payment', 'Pay on delivery (Lagos)']
+                ].map(([k, v]) => (
+                  <div
+                    key={k}
+                    className="flex items-start justify-between gap-4 border-b border-slate-100 pb-2 last:border-0"
+                  >
+                    <dt className="font-accent font-bold text-slate-500 text-xs uppercase tracking-wider shrink-0">
+                      {k}
+                    </dt>
+                    <dd className="font-bold text-slate-900 text-right">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* ================= PRICE TIERS ================= */}
+      <section className="space-y-8">
+        <div className="text-center space-y-3 max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-pill text-xs font-bold text-amber-600 uppercase tracking-widest">
+            <Zap className="w-3.5 h-3.5 text-red-500" />
+            <span>Official Retail Pricing</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
+            CHOOSE HOW MANY 500ML BOTTLES YOU NEED
+          </h2>
+          <p className="text-sm text-slate-600">
+            Every pack is the same 500ml bottle. The per-bottle price falls as the pack grows — from
+            ₦{priceForBottleCount(1).toLocaleString()} down to ₦5,000 each.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+          {BUNDLES.map((tier) => (
+            <BundleCard
+              key={tier.id}
+              bundle={tier}
+              onOrder={(b) => onOpenOrderModal(INSTANT_KILLER_PRODUCT_ID, b.bottles)}
+              onLocateStore={() => onNavigate('/locations')}
+            />
+          ))}
+        </div>
+      </section>
 
       {/* SEND OFF Powder — full-width spotlight */}
       {powderProducts.map((prod) => (
         <div key={prod.id} className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <ProductCard
             product={prod}
-            onOrder={(p) => onOpenOrderModal(p.sizeMl)}
+            onOrder={() => onOpenOrderModal(SEND_OFF_PRODUCT_ID, 1)}
             onLocateStore={() => onNavigate('/locations')}
           />
           <div className="glass-card p-8 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-white via-emerald-50 to-teal-50 space-y-6 h-full flex flex-col justify-center">
@@ -112,166 +225,94 @@ export function ProductsPage({ onNavigate, onOpenOrderModal }: ProductsPageProps
         </div>
       ))}
 
-      {/* ================= WHOLESALE & BULK CARTON CALCULATOR ================= */}
-      <div className="glass-card p-8 rounded-3xl border border-slate-200 shadow-2xl bg-gradient-to-br from-white via-slate-50 to-red-50 space-y-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 p-0.5 shadow-lg">
-              <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-                <Calculator className="w-6 h-6 text-red-500" />
-              </div>
-            </div>
-            <div>
-              <h3 className="text-2xl font-display font-bold text-slate-900 tracking-wide">
-                Wholesale & Hotel Bulk Carton Pricing
-              </h3>
-              <p className="text-xs text-amber-600 font-medium">
-                Save up to 15% on bulk carton orders (24 bottles per carton)
-              </p>
-            </div>
-          </div>
-
-          {/* Size selector */}
-          <div className="flex items-center gap-2">
-            {[500, 250, 100].map((s) => (
-              <button
-                key={s}
-                onClick={() => setSelectedSizeForComparison(s)}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  selectedSizeForComparison === s
-                    ? 'bg-red-600 text-white border border-red-400'
-                    : 'glass-pill text-slate-600'
-                }`}
-              >
-                {s}ml
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <div>
-              <label className="block text-xs font-accent font-bold uppercase text-slate-700 mb-2">
-                Cartons Required (24 bottles / carton): <span className="text-amber-600 font-mono text-sm">{cartonQty} Cartons ({totalBottles} bottles)</span>
-              </label>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setCartonQty(Math.max(1, cartonQty - 1))}
-                  className="w-10 h-10 rounded-xl glass-pill text-slate-700 font-bold text-lg hover:bg-red-600 hover:text-white cursor-pointer"
-                >
-                  -
-                </button>
-                <input
-                  type="range"
-                  min={1}
-                  max={50}
-                  value={cartonQty}
-                  onChange={(e) => setCartonQty(parseInt(e.target.value))}
-                  className="w-full accent-red-500"
-                />
-                <button
-                  onClick={() => setCartonQty(cartonQty + 1)}
-                  className="w-10 h-10 rounded-xl glass-pill text-slate-700 font-bold text-lg hover:bg-red-600 hover:text-white cursor-pointer"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="glass-pill p-3 rounded-2xl">
-                <span className="block text-[11px] text-slate-500 font-bold uppercase">Standard Retail</span>
-                <span className="text-base font-display font-bold text-slate-700 line-through">
-                  ₦{standardPrice.toLocaleString()}
-                </span>
-              </div>
-
-              <div className="glass-pill p-3 rounded-2xl border border-amber-400/40">
-                <span className="block text-[11px] text-amber-600 font-bold uppercase">Bulk Discount</span>
-                <span className="text-base font-display font-bold text-amber-600">
-                  {(wholesaleDiscountRate * 100)}% OFF
-                </span>
-              </div>
-
-              <div className="glass-pill p-3 rounded-2xl border border-emerald-500/40 bg-emerald-50">
-                <span className="block text-[11px] text-emerald-600 font-bold uppercase">Your Savings</span>
-                <span className="text-base font-display font-bold text-emerald-600">
-                  ₦{savingsNgn.toLocaleString()}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-5 glass-card p-6 rounded-2xl border border-red-500/40 bg-white text-center space-y-4">
-            <span className="text-xs font-accent font-bold uppercase tracking-wider text-slate-500">
-              Wholesale Package Total:
-            </span>
-            <div className="text-4xl font-display font-bold text-amber-600">
-              ₦{wholesaleTotal.toLocaleString()}
-            </div>
-            <p className="text-xs text-slate-600">
-              Includes priority dispatch from Abule Egba Main Depot to anywhere in Nigeria.
-            </p>
-            <button
-              onClick={() => onOpenOrderModal(selectedSizeForComparison)}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg hover:brightness-110 cursor-pointer"
-            >
-              Order {cartonQty} Cartons Now
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ================= SPECIFICATIONS COMPARISON TABLE ================= */}
+      {/* ================= PRICE TIER COMPARISON TABLE ================= */}
       <div className="glass-card p-8 rounded-3xl border border-slate-200 shadow-2xl space-y-6">
-        <h3 className="text-2xl font-display font-bold text-slate-900 tracking-wide">
-          DETAILED SIZE COMPARISON & SPECIFICATIONS
-        </h3>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h3 className="text-2xl font-display font-bold text-slate-900 tracking-wide">
+            PACK PRICING AT A GLANCE
+          </h3>
+          <p className="text-xs text-slate-500">
+            Every pack contains the same {BOTTLE_ML}ml bottle.
+          </p>
+        </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="w-full text-left text-xs border-collapse min-w-[640px]">
             <thead>
               <tr className="border-b border-slate-200 text-slate-500 font-accent font-bold uppercase tracking-wider">
-                <th className="py-3 px-4">Feature / Spec</th>
-                <th className="py-3 px-4 text-amber-600">500ml (Big Size)</th>
-                <th className="py-3 px-4">250ml (Medium)</th>
-                <th className="py-3 px-4">100ml (Small)</th>
+                <th className="py-3 px-4">Pack</th>
+                <th className="py-3 px-4">Bottles × 500ml</th>
+                <th className="py-3 px-4 text-amber-600">You Pay</th>
+                <th className="py-3 px-4">Was</th>
+                <th className="py-3 px-4">Per Bottle</th>
+                <th className="py-3 px-4">You Save</th>
+                <th className="py-3 px-4">Best For</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-600">
-              <tr>
-                <td className="py-3 px-4 font-bold text-slate-900">Retail Price</td>
-                <td className="py-3 px-4 font-bold text-amber-600 font-mono text-sm">₦3,000</td>
-                <td className="py-3 px-4 font-bold text-amber-600 font-mono text-sm">₦2,000</td>
-                <td className="py-3 px-4 font-bold text-amber-600 font-mono text-sm">₦1,000</td>
-              </tr>
-              <tr>
-                <td className="py-3 px-4 font-bold text-slate-900">Coverage Area</td>
-                <td className="py-3 px-4">3–4 Bedrooms (Up to 120 sq.m)</td>
-                <td className="py-3 px-4">1–2 Bedrooms (Up to 60 sq.m)</td>
-                <td className="py-3 px-4">Spot Treatment / Travel</td>
-              </tr>
-              <tr>
-                <td className="py-3 px-4 font-bold text-slate-900">Spray Nozzle Mechanism</td>
-                <td className="py-3 px-4 text-red-600 font-semibold">Heavy Duty Ergofit Trigger</td>
-                <td className="py-3 px-4">Stream & Mist Pump</td>
-                <td className="py-3 px-4">Pocket Atomizer</td>
-              </tr>
-              <tr>
-                <td className="py-3 px-4 font-bold text-slate-900">Primary Use Case</td>
-                <td className="py-3 px-4">Severe bedbug infestations & hotels</td>
-                <td className="py-3 px-4">Routine apartment bug spray</td>
-                <td className="py-3 px-4">Travel, hotel beds, luggage</td>
-              </tr>
-              <tr>
-                <td className="py-3 px-4 font-bold text-slate-900">Residual Duration</td>
-                <td className="py-3 px-4 text-emerald-600 font-bold">3+ Days Active Shield</td>
-                <td className="py-3 px-4 text-emerald-600 font-bold">3+ Days Active Shield</td>
-                <td className="py-3 px-4 text-emerald-600 font-bold">3+ Days Active Shield</td>
-              </tr>
+              {BUNDLES.map((tier) => {
+                const perBottle = Math.round(tier.priceNgn / tier.bottles);
+                const save = tier.listPriceNgn ? tier.listPriceNgn - tier.priceNgn : 0;
+                return (
+                  <tr
+                    key={tier.id}
+                    className={tier.highlight ? 'bg-red-50/50' : undefined}
+                  >
+                    <td className="py-3 px-4 font-bold text-slate-900">
+                      {tier.label}
+                      {tier.badge && (
+                        <span className="ml-2 text-[9px] font-accent font-bold uppercase tracking-wider text-red-600">
+                          {tier.badge}
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4">{tier.bottles}</td>
+                    <td className="py-3 px-4 font-bold text-amber-600 font-mono text-sm">
+                      ₦{tier.priceNgn.toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4 font-mono">
+                      {tier.listPriceNgn ? (
+                        <span className="line-through text-slate-400">
+                          ₦{tier.listPriceNgn.toLocaleString()}
+                        </span>
+                      ) : (
+                        '—'
+                      )}
+                    </td>
+                    <td className="py-3 px-4 font-mono">₦{perBottle.toLocaleString()}</td>
+                    <td className="py-3 px-4 font-mono font-bold text-emerald-700">
+                      {save > 0 ? `₦${save.toLocaleString()}` : '—'}
+                    </td>
+                    <td className="py-3 px-4">{tier.bestFor}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+        </div>
+
+        <div className="flex flex-wrap gap-3 pt-2">
+          {BUNDLES.map((tier) => (
+            <button
+              key={tier.id}
+              onClick={() => onOpenOrderModal(INSTANT_KILLER_PRODUCT_ID, tier.bottles)}
+              className={`py-2.5 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                tier.highlight
+                  ? 'bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-600/30'
+                  : 'glass-pill text-slate-700 hover:border-brand hover:text-brand'
+              }`}
+            >
+              Order {tier.label} — ₦{tier.priceNgn.toLocaleString()}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-start gap-2 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900">
+          <Truck className="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            <strong>Pay on Delivery (Lagos).</strong> Orders placed on WhatsApp are confirmed by a
+            depot representative. Nationwide delivery is quoted on request.
+          </span>
         </div>
       </div>
 

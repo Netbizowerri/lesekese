@@ -74,7 +74,7 @@ export function ProductCard({ product, onOrder, onLocateStore }: ProductCardProp
             </span>
           )}
           <span className="text-xs bg-red-50 text-red-600 font-bold px-2 py-0.5 rounded border border-red-200">
-            Retail Price
+            {isPowder ? 'Retail Price' : '1 Bottle Price'}
           </span>
         </div>
 

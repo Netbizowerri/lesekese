@@ -43,7 +43,7 @@ export function TermsPage({ onNavigate }: LegalPageProps) {
 
           <h3 className="text-lg font-accent font-bold text-slate-900">4. Pricing & Wholesale Orders</h3>
           <p>
-            Product prices (₦3,000 for 500ml, ₦2,000 for 250ml, ₦1,000 for 100ml) are subject to official manufacturer adjustments. Bulk carton orders qualify for wholesale discount rates as confirmed upon invoice.
+            LESEKESE Instant Killer is supplied in a single 500ml size, sold in packs of 1, 2, 3, or 5 bottles (Starter ₦10,000, Family ₦15,000, Full House ₦20,000, Landlord ₦25,000). All prices are subject to official manufacturer adjustments. Bulk carton orders qualify for wholesale discount rates as confirmed upon invoice.
           </p>
         </div>
       </div>

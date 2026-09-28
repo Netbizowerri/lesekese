@@ -13,7 +13,7 @@ test.describe('Contact / inquiry form', () => {
     await page.getByPlaceholder('e.g. 08023725740').fill('08012345678');
     await page.getByPlaceholder('e.g. name@domain.com').fill('ada.obi@example.com');
     await page
-      .getByPlaceholder('Describe your pest issue, quantity needed, or specific delivery address...')
+      .getByRole('textbox', { name: /Detailed Message/i })
       .fill('I need a carton of 500ml delivered to Abuja.');
 
     await page.getByRole('button', { name: /Submit Inquiry/i }).click();

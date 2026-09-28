@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
 import { OrderModal } from './components/OrderModal';
+import { OrderFormModal } from './components/OrderFormModal';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -11,6 +12,8 @@ import { HowItWorksPage } from './pages/HowItWorksPage';
 import { LocationsPage } from './pages/LocationsPage';
 import { ContactPage } from './pages/ContactPage';
 import { AdminPage } from './pages/AdminPage';
+import { AdminLoginPage } from './pages/AdminLoginPage';
+import { BlogPage, BlogPostPage } from './pages/BlogPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { TermsPage } from './pages/TermsPage';
 import { SafetyMSDSPage } from './pages/SafetyMSDSPage';
@@ -24,6 +27,8 @@ const ROUTES = [
   '/locations',
   '/contact',
   '/admin',
+  '/adminlogin',
+  '/blog',
   '/privacy',
   '/terms',
   '/safety',
@@ -35,7 +40,17 @@ const STANDALONE_ROUTES = [
   '/lesekese-bedbugs-and-cockroaches-instant-killer'
 ];
 
-const SITE_URL = 'https://www.lesekeseproducts.com';
+/** Admin renders without the marketing Navbar/Footer so staff can work full-width. */
+const CHROWNESS_ROUTES = ['/admin', '/adminlogin'];
+
+/** /blog/<slug> article pages share the /blog route prefix. */
+const BLOG_SLUG_PATTERN = /^\/blog\/([A-Za-z0-9][A-Za-z0-9-]*)$/;
+
+function isKnownPath(path: string): boolean {
+  return ROUTES.includes(path) || BLOG_SLUG_PATTERN.test(path);
+}
+
+const SITE_URL = 'https://lesekeseproducts.com';
 
 const ROUTE_META: Record<string, { title: string; description: string }> = {
   '/': {
@@ -44,9 +59,9 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
       'Hotter Than Fire. Tougher Than Pests. LESEKESE kills bedbugs, cockroaches, mosquitoes and household pests on contact with 3+ days residual protection. Order via WhatsApp or find a distributor near you.'
   },
   '/products': {
-    title: 'LESEKESE Products & Prices | 100ml, 250ml, 500ml Instant Insecticide',
+    title: 'LESEKESE Instant Killer Pricing | 500ml Bottles From ₦10,000',
     description:
-      'Browse LESEKESE instant killer sizes — 100ml, 250ml and 500ml heavy duty. Kills bedbugs, cockroaches and household pests on contact. Bulk and wholesale pricing available nationwide.'
+      'One powerful 500ml bottle, four price tiers. Starter 1 bottle ₦10,000, Family 2 bottles ₦15,000, Full House 3 bottles ₦20,000, Landlord 5 bottles ₦25,000. Kills bedbugs and cockroaches on contact.'
   },
   '/how-it-works': {
     title: 'How LESEKESE Works | Instant Knockdown vs. Traditional Insecticide',
@@ -64,8 +79,17 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
       'Reach LESEKESE for bulk orders, retailer and distributor applications, or support. Call or WhatsApp 0802 372 5740, or send an inquiry — dispatched within 24–48 hours.'
   },
   '/admin': {
-    title: 'LESEKESE Admin Dashboard | Lead Management',
-    description: 'Authorised LESEKESE team dashboard for managing leads and distributor inventory.'
+    title: 'LESEKESE Admin Dashboard',
+    description: 'Authorised LESEKESE team dashboard for managing orders, leads and blog posts.'
+  },
+  '/adminlogin': {
+    title: 'LESEKESE Staff Sign In',
+    description: 'Authorised staff sign in to the LESEKESE admin dashboard.'
+  },
+  '/blog': {
+    title: 'Pest Control Blog | Bedbugs, Cockroaches & Safe Insecticide Use',
+    description:
+      'Practical guides to killing bedbugs and cockroaches in Nigerian homes, plus safe handling of LESEKESE insecticide.'
   },
   '/privacy': {
     title: 'Privacy Policy | LESEKESE Products',
@@ -94,17 +118,20 @@ function getCurrentPath(): string {
   // Backward compat: migrate old #/products style hashes to clean paths
   const hashRoute = window.location.hash.replace(/^#/, '');
   if (hashRoute.startsWith('/')) {
-    return ROUTES.includes(hashRoute) ? hashRoute : '/';
+    return isKnownPath(hashRoute) ? hashRoute : '/';
   }
 
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
-  return ROUTES.includes(pathname) ? pathname : '/';
+  return isKnownPath(pathname) ? pathname : '/';
 }
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>('/');
   const [orderModalOpen, setOrderModalOpen] = useState(false);
-  const [orderModalSize, setOrderModalSize] = useState<number>(500);
+  const [orderModalProductId, setOrderModalProductId] = useState<string>('prod-500');
+  const [orderModalBottleCount, setOrderModalBottleCount] = useState<number>(2);
+  // Separate from OrderModal: "Order Now" opens the Formspree-backed form.
+  const [orderFormOpen, setOrderFormOpen] = useState(false);
 
   // Browser-router style navigation (History API) — no hash.
   // Server must fall back to index.html on cPanel (see .htaccess).
@@ -129,6 +156,10 @@ export default function App() {
 
   // Per-route SEO metadata (title, description, canonical, OG)
   useEffect(() => {
+    // Article pages own their own metadata once the post loads, so the
+    // generic route defaults must not overwrite them.
+    if (BLOG_SLUG_PATTERN.test(currentPath) || CHROWNESS_ROUTES.includes(currentPath)) return;
+
     const meta = ROUTE_META[currentPath] ?? ROUTE_META['/'];
     const canonicalUrl = `${SITE_URL}${currentPath === '/' ? '/' : currentPath}`;
 
@@ -161,7 +192,7 @@ export default function App() {
   }, [currentPath]);
 
   const navigateTo = (path: string) => {
-    const target = ROUTES.includes(path) ? path : '/';
+    const target = isKnownPath(path) ? path : '/';
     if (target !== window.location.pathname) {
       window.history.pushState(null, '', target);
     }
@@ -171,15 +202,29 @@ export default function App() {
     document.body.scrollTop = 0;
   };
 
-  const handleOpenOrderModal = (sizeMl: number = 500) => {
-    setOrderModalSize(sizeMl);
+  const handleOpenOrderModal = (productId: string = 'prod-500', bottleCount: number = 2) => {
+    setOrderModalProductId(productId);
+    setOrderModalBottleCount(bottleCount);
     setOrderModalOpen(true);
+  };
+
+  /** Opens the "Order Now" form, which posts to Formspree. */
+  const handleOpenOrderForm = (productId: string = 'prod-500', bottleCount: number = 2) => {
+    setOrderModalProductId(productId);
+    setOrderModalBottleCount(bottleCount);
+    setOrderFormOpen(true);
   };
 
   const renderCurrentPage = () => {
     switch (currentPath) {
       case '/':
-        return <HomePage onNavigate={navigateTo} onOpenOrderModal={handleOpenOrderModal} />;
+        return (
+          <HomePage
+            onNavigate={navigateTo}
+            onOpenOrderModal={handleOpenOrderModal}
+            onOpenOrderForm={handleOpenOrderForm}
+          />
+        );
       case '/products':
         return <ProductsPage onNavigate={navigateTo} onOpenOrderModal={handleOpenOrderModal} />;
       case '/how-it-works':
@@ -189,7 +234,11 @@ export default function App() {
       case '/contact':
         return <ContactPage onNavigate={navigateTo} onOpenOrderModal={handleOpenOrderModal} />;
       case '/admin':
-        return <AdminPage onNavigate={navigateTo} />;
+        return <AdminPage />;
+      case '/adminlogin':
+        return <AdminLoginPage />;
+      case '/blog':
+        return <BlogPage onNavigate={navigateTo} />;
       case '/privacy':
         return <PrivacyPage onNavigate={navigateTo} />;
       case '/terms':
@@ -200,13 +249,34 @@ export default function App() {
         return <RefundsPage onNavigate={navigateTo} />;
       case '/lesekese-bedbugs-and-cockroaches-instant-killer':
         return <LandingPage />;
-      default:
-        return <HomePage onNavigate={navigateTo} onOpenOrderModal={handleOpenOrderModal} />;
+      default: {
+        const slugMatch = currentPath.match(BLOG_SLUG_PATTERN);
+        if (slugMatch) {
+          return <BlogPostPage slug={slugMatch[1]} onNavigate={navigateTo} />;
+        }
+        return (
+          <HomePage
+            onNavigate={navigateTo}
+            onOpenOrderModal={handleOpenOrderModal}
+            onOpenOrderForm={handleOpenOrderForm}
+          />
+        );
+      }
     }
   };
 
   // Standalone routes render without Navbar/Footer (pure sales funnel)
   if (STANDALONE_ROUTES.includes(currentPath)) {
+    return (
+      <>
+        <ScrollToTop currentPath={currentPath} />
+        {renderCurrentPage()}
+      </>
+    );
+  }
+
+  // The admin CMS brings its own full-height shell and navigation.
+  if (CHROWNESS_ROUTES.includes(currentPath)) {
     return (
       <>
         <ScrollToTop currentPath={currentPath} />
@@ -225,6 +295,7 @@ export default function App() {
         currentPath={currentPath}
         onNavigate={navigateTo}
         onOpenOrderModal={handleOpenOrderModal}
+        onOpenOrderForm={handleOpenOrderForm}
       />
 
       {/* Page Content View */}
@@ -239,7 +310,16 @@ export default function App() {
       <OrderModal
         isOpen={orderModalOpen}
         onClose={() => setOrderModalOpen(false)}
-        selectedSizeMl={orderModalSize}
+        productId={orderModalProductId}
+        bottleCount={orderModalBottleCount}
+      />
+
+      {/* "Order Now" form — posts to Formspree */}
+      <OrderFormModal
+        isOpen={orderFormOpen}
+        onClose={() => setOrderFormOpen(false)}
+        productId={orderModalProductId}
+        bottleCount={orderModalBottleCount}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 # LESEKESE Products — robots.txt
-# https://www.lesekeseproducts.com
+# https://lesekeseproducts.com
 
 # Allow all AI search crawlers (GEO)
 User-agent: GPTBot
@@ -28,4 +28,4 @@ Disallow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://www.lesekeseproducts.com/sitemap.xml
+Sitemap: https://lesekeseproducts.com/sitemap.xml

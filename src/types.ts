@@ -18,6 +18,21 @@ export interface Product {
   image?: string;
 }
 
+export interface BundleTier {
+  id: string;
+  label: string;
+  bottles: number;
+  priceNgn: number;
+  listPriceNgn?: number;
+  badge?: string;
+  highlight?: boolean;
+  headline: string;
+  description: string;
+  bestFor: string;
+  coverage: string;
+  includes: string[];
+}
+
 export interface DistributorLocation {
   id: string;
   name: string;
@@ -32,9 +47,7 @@ export interface DistributorLocation {
   isPrimary?: boolean;
   photoUrl?: string;
   stockAvailable: {
-    ml500: boolean;
-    ml250: boolean;
-    ml100: boolean;
+    instantKiller: boolean;
     sendOff: boolean;
   };
 }

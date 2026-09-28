@@ -1,9 +1,16 @@
 import { useState } from 'react';
 import { Calculator, Flame, ShoppingBag, ShieldAlert, Sparkles, Check } from 'lucide-react';
 import { motion } from 'motion/react';
+import {
+  BUNDLES,
+  INSTANT_KILLER_PRODUCT_ID,
+  SEND_OFF_PRODUCT_ID,
+  priceForBottleCount,
+  tierForBottleCount
+} from '../data/mockData';
 
 interface PestCalculatorProps {
-  onOrderRecommended: (sizeMl: number, qty: number) => void;
+  onOrderRecommended: (productId: string, bottleCount: number) => void;
 }
 
 export function PestCalculator({ onOrderRecommended }: PestCalculatorProps) {
@@ -13,22 +20,12 @@ export function PestCalculator({ onOrderRecommended }: PestCalculatorProps) {
   const [pestType, setPestType] = useState<'Bedbugs' | 'Cockroaches' | 'Both' | 'Snakes/Scorpions'>('Bedbugs');
   const isSendOff = pestType === 'Snakes/Scorpions';
 
-  // Calculation Logic
-  const totalAreaUnits = rooms * 1.5 + beds * 1 + (infestation === 'Severe' ? 2 : infestation === 'Moderate' ? 1 : 0.5);
-  
-  let recommended500ml = 1;
-  let recommended250ml = 0;
-
-  if (totalAreaUnits > 5) {
-    recommended500ml = Math.ceil(totalAreaUnits / 3);
-  } else if (totalAreaUnits > 2.5) {
-    recommended500ml = 1;
-    recommended250ml = 1;
-  } else {
-    recommended500ml = 1;
-  }
-
-  const estimatedCostNgn = isSendOff ? 6000 : (recommended500ml * 3000) + (recommended250ml * 2000);
+  // One bottle (500ml) treats roughly one bedroom plus its mattress seams.
+  const roomLoad = rooms + beds * 0.5 + (infestation === 'Severe' ? 1.5 : infestation === 'Moderate' ? 0.75 : 0.25);
+  const recommendedBottles = Math.max(1, Math.min(BUNDLES[BUNDLES.length - 1].bottles, Math.ceil(roomLoad)));
+  const tier = tierForBottleCount(recommendedBottles);
+  const estimatedCostNgn = isSendOff ? 6000 : priceForBottleCount(recommendedBottles);
+  const unitRate = Math.round(estimatedCostNgn / (isSendOff ? 1 : recommendedBottles));
 
   return (
     <div className="relative glass-card rounded-3xl p-6 md:p-8 border border-slate-200 shadow-2xl overflow-hidden">
@@ -182,18 +179,22 @@ export function PestCalculator({ onOrderRecommended }: PestCalculatorProps) {
             </div>
           ) : (
             <div className="space-y-3 mb-6">
-              {recommended500ml > 0 && (
-                <div className="flex items-center justify-between text-sm text-slate-700 py-1.5 border-b border-slate-100">
-                  <span className="font-semibold">{recommended500ml}× LESEKESE 500ml (Big Size)</span>
-                  <span className="font-bold text-amber-600 font-mono">₦{(recommended500ml * 3000).toLocaleString()}</span>
-                </div>
-              )}
-              {recommended250ml > 0 && (
-                <div className="flex items-center justify-between text-sm text-slate-700 py-1.5 border-b border-slate-100">
-                  <span className="font-semibold">{recommended250ml}× LESEKESE 250ml (Medium)</span>
-                  <span className="font-bold text-amber-600 font-mono">₦{(recommended250ml * 2000).toLocaleString()}</span>
-                </div>
-              )}
+              <div className="rounded-xl border border-brand/30 bg-white/70 px-3 py-2">
+                <span className="block text-[10px] font-accent font-bold uppercase tracking-widest text-brand">
+                  Recommended pack
+                </span>
+                <span className="block text-sm font-bold text-slate-900">
+                  {tier.label} — {tier.headline}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm text-slate-700 py-1.5 border-b border-slate-100">
+                <span className="font-semibold">
+                  {recommendedBottles}× Instant Killer 500ml
+                </span>
+                <span className="font-bold text-amber-600 font-mono">
+                  ₦{unitRate.toLocaleString()} / bottle
+                </span>
+              </div>
               <div className="pt-2 flex items-baseline justify-between">
                 <span className="text-xs text-slate-500 font-medium">Estimated Total Price:</span>
                 <span className="text-3xl font-display font-bold text-slate-900 tracking-wider">
@@ -213,7 +214,12 @@ export function PestCalculator({ onOrderRecommended }: PestCalculatorProps) {
           </div>
 
           <button
-            onClick={() => onOrderRecommended(isSendOff ? 250 : 500, isSendOff ? 1 : recommended500ml + recommended250ml)}
+            onClick={() =>
+              onOrderRecommended(
+                isSendOff ? SEND_OFF_PRODUCT_ID : INSTANT_KILLER_PRODUCT_ID,
+                isSendOff ? 1 : recommendedBottles
+              )
+            }
             className={`w-full py-3 px-4 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-lg hover:brightness-110 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer ${
               isSendOff
                 ? 'bg-gradient-to-r from-emerald-600 to-teal-500 shadow-emerald-600/40'

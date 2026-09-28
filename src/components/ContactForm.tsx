@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { ContactFormData } from '../types';
-import { LOCATIONS } from '../data/mockData';
+import { BUNDLES, LOCATIONS } from '../data/mockData';
 import { Send, AlertCircle, Loader2, Phone, Mail, MapPin, Clock, ShieldCheck, Flame } from 'lucide-react';
 import { ThankYouModal } from './ThankYouModal';
+import { recordLead } from '../lib/queries';
+import { isSupabaseConfigured } from '../lib/supabase';
 
 interface ContactFormProps {
   initialInquiryType?: ContactFormData['inquiryType'];
@@ -32,6 +34,23 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
     setErrorMessage(null);
 
     try {
+      // 0. Record the lead for the in-house admin dashboard (additive: a
+      // failure here must not block Formspree/Privyr or the success state).
+      if (isSupabaseConfigured) {
+        try {
+          await recordLead({
+            full_name: formData.fullName,
+            email: formData.email,
+            phone: formData.phone,
+            location: formData.preferredLocation,
+            inquiry_type: formData.inquiryType,
+            message: formData.message,
+          });
+        } catch (err) {
+          console.warn('Supabase lead capture soft warning:', err);
+        }
+      }
+
       // 1. Submit to Formspree endpoint (Formspree or fallback handler)
       const formspreeEndpoint = (import.meta as any).env?.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/mrpzqnyz';
 
@@ -285,6 +304,15 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
                   onChange={(e) => setFormData({ ...formData, quantityRequested: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl glass-input text-xs font-medium bg-white text-slate-900"
                 >
+                  {BUNDLES.map((tier) => (
+                    <option
+                      key={tier.id}
+                      value={`Instant Killer 500ml — ${tier.label} (${tier.bottles} x 500ml)`}
+                    >
+                      Instant Killer — {tier.label} ({tier.bottles} x 500ml) ₦
+                      {tier.priceNgn.toLocaleString()}
+                    </option>
+                  ))}
                   <option value="1 Carton (24 Bottles)">1 Carton (24 Bottles)</option>
                   <option value="5 Cartons (120 Bottles)">5 Cartons (120 Bottles)</option>
                   <option value="10 Cartons (240 Bottles)">10 Cartons (240 Bottles)</option>
@@ -304,6 +332,7 @@ export function ContactForm({ initialInquiryType = 'General Question', initialPr
               </label>
               <textarea
                 rows={3}
+                aria-label="Detailed Message / Delivery Instructions"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="Describe your pest issue, quantity needed, product (spray or SEND OFF powder), or specific delivery address..."

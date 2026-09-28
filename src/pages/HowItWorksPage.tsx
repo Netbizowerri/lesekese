@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { FAQS } from '../data/mockData';
+import { FAQS, INSTANT_KILLER_PRODUCT_ID } from '../data/mockData';
 import { Flame, Zap, ShieldCheck, ChevronDown, Search, AlertTriangle, CheckCircle2, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface HowItWorksPageProps {
   onNavigate: (path: string) => void;
-  onOpenOrderModal: (sizeMl?: number) => void;
+  onOpenOrderModal: (productId?: string, bottleCount?: number) => void;
 }
 
 export function HowItWorksPage({ onNavigate, onOpenOrderModal }: HowItWorksPageProps) {

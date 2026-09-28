@@ -73,8 +73,7 @@ export function Footer({ onNavigate }: FooterProps) {
                 { label: 'Privacy Policy', path: '/privacy' },
                 { label: 'Terms of Service', path: '/terms' },
                 { label: 'Safety Guidelines & MSDS', path: '/safety' },
-                { label: 'Refund & Delivery Policy', path: '/refunds' },
-                { label: 'Admin Portal Login', path: '/admin' }
+                { label: 'Refund & Delivery Policy', path: '/refunds' }
               ].map((item) => (
                 <li key={item.path}>
                   <button

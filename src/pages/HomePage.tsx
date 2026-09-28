@@ -1,17 +1,39 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Flame, ShieldCheck, Zap, ArrowRight, Award, CheckCircle2, MapPin, PhoneCall, Sparkles, Building2, Star, Users, HandCoins, Store } from 'lucide-react';
-import { PRODUCTS, LOCATIONS } from '../data/mockData';
+import { Flame, ShieldCheck, Zap, ArrowRight, Award, CheckCircle2, MapPin, PhoneCall, Sparkles, Building2, Star, Users, HandCoins, Store, Truck, MessageSquare, ShieldOff } from 'lucide-react';
+import {
+  BUNDLES,
+  DISTRIBUTOR_SECTION_IMAGE,
+  EARN_SECTION_IMAGE,
+  GOODBYE_VIDEO_POSTER,
+  GOODBYE_VIDEO_URL,
+  HERO_IMAGE_URL,
+  INSTANT_KILLER_PRODUCT_ID,
+  PRODUCTS,
+  PRODUCT_IN_ACTION_IMAGE,
+  PRODUCT_IMAGE_MULTIPLE,
+  PRODUCT_IMAGE_SINGLE,
+  priceForBottleCount,
+  SEND_OFF_PRODUCT_ID
+} from '../data/mockData';
 import { ProductBottleGraphic } from '../components/ProductBottleGraphic';
 import { ProductCard } from '../components/ProductCard';
+import { BundleCard, buildBundleWhatsAppLink } from '../components/BundleCard';
+import { ActionVideoCard } from '../components/ActionVideoCard';
+import { VideoPlayer } from '../components/VideoPlayer';
+import { OrderCtaCluster } from '../components/OrderCtaCluster';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
-  onOpenOrderModal: (sizeMl?: number) => void;
+  onOpenOrderModal: (productId?: string, bottleCount?: number) => void;
+  /** Opens the "Order Now" form that posts to Formspree. */
+  onOpenOrderForm: (productId?: string, bottleCount?: number) => void;
 }
 
-export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
-  const [selectedHeroSize, setSelectedHeroSize] = useState<number | null>(null);
+export function HomePage({ onNavigate, onOpenOrderModal, onOpenOrderForm }: HomePageProps) {
+  const [activeBundleId, setActiveBundleId] = useState<string>('bundle-family');
+  const activeBundle = BUNDLES.find((b) => b.id === activeBundleId) ?? BUNDLES[0];
+  const instantKiller = PRODUCTS.find((p) => p.id === INSTANT_KILLER_PRODUCT_ID)!;
 
   return (
     <div className="space-y-12 lg:space-y-20 pt-28 sm:pt-36 lg:pt-40">
@@ -32,51 +54,51 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="lg:col-span-5 flex flex-col items-center justify-center order-1 lg:order-2"
             >
-              <ProductBottleGraphic sizeMl={selectedHeroSize} />
+              <ProductBottleGraphic
+                bottles={activeBundle.bottles}
+                tierLabel={activeBundle.label}
+                totalNgn={activeBundle.priceNgn}
+              />
 
-              {/* Size Selector Tabs directly after hero image */}
+              {/* Pack selector — one 500ml bottle, four price tiers */}
               <div className="w-full max-w-xs sm:max-w-sm mt-0 sm:mt-1 mb-2 sm:mb-3 px-1 sm:px-2">
                 <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                   <span className="text-[11px] sm:text-xs font-accent font-bold uppercase tracking-wider text-amber-600">
-                    Select Bottle Size Preview:
+                    One 500ml size. Pick your pack:
                   </span>
-                  {selectedHeroSize !== null && (
-                    <button
-                      onClick={() => setSelectedHeroSize(null)}
-                      className="text-[10px] sm:text-[11px] text-slate-500 hover:text-amber-600 underline cursor-pointer"
-                    >
-                      Show All 3
-                    </button>
-                  )}
                 </div>
-                <div className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full">
-                  {[
-                    { size: 500, label: '500ml' },
-                    { size: 250, label: '250ml' },
-                    { size: 100, label: '100ml' }
-                  ].map((item) => (
+                <div className="grid grid-cols-4 gap-1.5 sm:gap-2 w-full">
+                  {BUNDLES.map((tier) => (
                     <button
-                      key={item.size}
-                      onClick={() => setSelectedHeroSize(selectedHeroSize === item.size ? null : item.size)}
-                      className={`py-1.5 sm:py-2 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer text-center ${
-                        selectedHeroSize === item.size
+                      key={tier.id}
+                      onClick={() => setActiveBundleId(tier.id)}
+                      aria-pressed={activeBundleId === tier.id}
+                      className={`py-1.5 sm:py-2 px-0.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer text-center ${
+                        activeBundleId === tier.id
                           ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white border border-red-400 shadow-lg shadow-red-600/40 ring-2 ring-red-500/30'
-                          : 'glass-pill text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200'
+                          : 'glass-pill text-slate-700 hover:bg-slate-100 border border-slate-200'
                       }`}
                     >
-                      {item.label}
+                      {tier.bottles}x
                     </button>
                   ))}
                 </div>
+                <p className="mt-1.5 text-center text-[11px] sm:text-xs text-slate-600">
+                  <span className="font-bold text-slate-900">{activeBundle.label}</span> —{' '}
+                  {activeBundle.bestFor} ·{' '}
+                  <span className="font-mono font-bold text-amber-600">
+                    ₦{activeBundle.priceNgn.toLocaleString()}
+                  </span>
+                </p>
               </div>
 
               {/* Primary Market Depot Callout */}
-              <div className="mt-1 sm:mt-2 glass-card p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border border-red-500/30 max-w-xs sm:max-w-sm text-center">
+              <div className="mt-1 sm:mt-2 glass-card p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200 max-w-xs sm:max-w-sm text-center">
                 <div className="text-[11px] sm:text-xs font-bold text-amber-600 uppercase tracking-wider flex items-center justify-center gap-1">
                   <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Fagba Main Depot HQ
                 </div>
                 <p className="text-[10px] sm:text-xs text-slate-600 mt-0.5 sm:mt-1">
-                  Suite 2 Adedoja Plaza, Fagba Railway (beside Bokku), Lagos. Wholesale & Retail in stock.
+                  Suite 2 Adedoja Plaza, Fagba Railway (beside Bokku), Lagos. Wholesale &amp; Retail in stock.
                 </p>
               </div>
             </motion.div>
@@ -104,25 +126,87 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
 
               {/* Subheadline Copy */}
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
-                Rapid-action spray formula engineered to kill bedbugs, bedbug larvae, German cockroaches, and household insects on contact. Engineered with 3+ days active residual protection.
+                One powerful 500ml bottle. Kills bedbugs, bedbug eggs and cockroaches on contact,
+                with 3-day residual protection. Buy 1, 2, 3 or 5 bottles — the more you buy, the more
+                you save.
               </p>
 
+              {/* Price strip */}
+              <div className="glass-pill rounded-2xl border border-amber-400/40 px-4 py-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+                <div>
+                  <span className="block text-[10px] font-accent font-bold uppercase tracking-widest text-slate-500">
+                    From
+                  </span>
+                  <span className="block font-display text-2xl font-bold text-amber-600 leading-none">
+                    ₦{priceForBottleCount(1).toLocaleString()}
+                  </span>
+                </div>
+                <div className="h-9 w-px bg-slate-200" aria-hidden="true" />
+                {BUNDLES.slice(1).map((tier) => (
+                  <div key={tier.id}>
+                    <span className="block text-[10px] font-accent font-bold uppercase tracking-widest text-slate-500">
+                      {tier.bottles} bottles
+                    </span>
+                    <span className="block font-display text-lg font-bold text-slate-900 leading-none">
+                      ₦{tier.priceNgn.toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+                <div className="flex items-center gap-1.5 text-[11px] font-accent font-bold uppercase tracking-wider text-brand">
+                  <Truck className="w-4 h-4" />
+                  <span>Pay on delivery</span>
+                </div>
+              </div>
+
               {/* Call-To-Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
                 <button
-                  onClick={() => onOpenOrderModal(selectedHeroSize || 500)}
+                  onClick={() => onOpenOrderModal(INSTANT_KILLER_PRODUCT_ID, activeBundle.bottles)}
                   className="py-4 px-8 rounded-2xl bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white font-accent font-bold text-sm uppercase tracking-wider shadow-2xl shadow-red-600/40 hover:brightness-110 active:scale-98 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
                 >
                   <Sparkles className="w-5 h-5 fill-white" />
-                  <span>Order Now (Fast Dispatch)</span>
+                  <span>Order {activeBundle.label} Pack</span>
                 </button>
 
+                <a
+                  href={buildBundleWhatsAppLink(activeBundle)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-accent font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  <span>Order on WhatsApp</span>
+                </a>
+              </div>
+
+              {/* All four ordering channels: Order Now form, WhatsApp, call, email */}
+              <div className="pt-1">
+                <OrderCtaCluster
+                  layout="inline"
+                  onOrderNow={() => onOpenOrderForm(INSTANT_KILLER_PRODUCT_ID, activeBundle.bottles)}
+                  packLabel={activeBundle.label}
+                  units={activeBundle.bottles}
+                  totalNgn={activeBundle.priceNgn}
+                />
+              </div>
+
+              <div className="flex sm:hidden">
                 <button
                   onClick={() => onNavigate('/locations')}
-                  className="py-4 px-6 rounded-2xl glass-pill text-slate-800 font-accent font-bold text-sm hover:border-red-500 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 rounded-2xl glass-pill text-slate-800 font-accent font-bold text-sm hover:border-brand transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MapPin className="w-5 h-5 text-amber-600" />
-                  <span>Find Abule Egba & Stores</span>
+                  <span>Find Fagba &amp; Nearby Stores</span>
+                </button>
+              </div>
+
+              <div className="hidden sm:flex">
+                <button
+                  onClick={() => onNavigate('/locations')}
+                  className="py-3.5 rounded-2xl glass-pill text-slate-800 font-accent font-bold text-sm hover:border-brand transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <MapPin className="w-5 h-5 text-amber-600" />
+                  <span>Find Fagba &amp; Nearby Stores</span>
                 </button>
               </div>
 
@@ -181,27 +265,138 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
         </div>
       </section>
 
-      {/* ================= PRODUCT RANGE SHOWCASE ================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      {/* ================= SINGLE PRODUCT + PRICE TIERS ================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center space-y-3 max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-pill text-xs font-bold text-amber-600 uppercase tracking-widest">
             <Flame className="w-3.5 h-3.5 text-red-500" />
-            <span>Product Catalog</span>
+            <span>One Bottle. Four Prices.</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
-            AVAILABLE IN THREE CONVENIENT SIZES
+            LESEKESE BEDBUGS &amp; COCKROACHES INSTANT KILLER — 500ML
           </h2>
-          <p className="text-sm text-slate-500">
-            Choose the exact volume needed for your room, hotel, or wholesale distribution requirement.
+          <p className="text-sm text-slate-600">
+            We retired the 100ml and 250ml sizes. Every home now gets the full-strength 500ml bottle —
+            just buy the number of bottles your apartment needs. More bottles, lower price each.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {PRODUCTS.map((prod) => (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Single product card */}
+          <div className="lg:col-span-4">
             <ProductCard
-              key={prod.id}
-              product={prod}
-              onOrder={(p) => onOpenOrderModal(p.sizeMl)}
+              product={instantKiller}
+              onOrder={() => onOpenOrderModal(INSTANT_KILLER_PRODUCT_ID, activeBundle.bottles)}
+              onLocateStore={() => onNavigate('/locations')}
+            />
+          </div>
+
+          {/* What it kills */}
+          <div className="lg:col-span-8 space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { value: '1 bottle', label: 'covers a 1-bedroom flat' },
+                { value: '3 bottles', label: 'full 3-bedroom fumigation' },
+                { value: '5 bottles', label: 'up to 6 bedrooms / 180 sq.m' }
+              ].map((item) => (
+                <div key={item.value} className="glass-card rounded-2xl border border-slate-200 px-4 py-4 text-center">
+                  <div className="font-display text-xl font-bold text-brand">{item.value}</div>
+                  <div className="text-xs text-slate-600 mt-0.5">{item.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+              <div className="glass-card rounded-3xl border border-slate-200 p-6 space-y-4">
+                <span className="text-[11px] font-accent font-bold uppercase tracking-widest text-amber-600">
+                  Kills on contact
+                </span>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {instantKiller.kills.map((k) => (
+                    <li key={k} className="flex items-center gap-2 text-sm text-slate-700">
+                      <ShieldOff className="w-4 h-4 text-red-500 shrink-0" />
+                      <span>{k}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="pt-3 border-t border-slate-100 space-y-2 text-sm text-slate-700">
+                  <p className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0" />
+                    <span>{instantKiller.sprayType}</span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0" />
+                    <span>3-day residual protection after spraying</span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0" />
+                    <span>Pay on delivery in Lagos</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="group relative rounded-3xl overflow-hidden border border-brand bg-white/90 shadow-xl">
+                  <div className="relative bg-slate-50 flex items-center justify-center p-3">
+                    <img
+                      src={PRODUCT_IN_ACTION_IMAGE}
+                      alt="LESEKESE Instant Killer in action on bedbugs and cockroaches"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-auto object-contain max-h-72 group-hover:scale-[1.03] transition-transform duration-500 block"
+                    />
+                  </div>
+                  <div className="px-4 py-3 border-t border-slate-100">
+                    <span className="text-[11px] font-accent font-bold uppercase tracking-widest text-red-600">
+                      LESEKESE in action
+                    </span>
+                    <h3 className="text-base font-display font-bold text-slate-900">
+                      Contact knockdown in seconds
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="group relative rounded-3xl overflow-hidden border border-brand bg-white/90 shadow-xl">
+                  <div className="relative bg-slate-50 flex items-center justify-center p-3">
+                    <img
+                      src={PRODUCT_IMAGE_MULTIPLE}
+                      alt="Multiple LESEKESE 500ml Instant Killer bottles"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-auto object-contain max-h-56 group-hover:scale-[1.03] transition-transform duration-500 block"
+                    />
+                  </div>
+                  <div className="px-4 py-3 border-t border-slate-100">
+                    <span className="text-[11px] font-accent font-bold uppercase tracking-widest text-amber-600">
+                      Stack up to 5 bottles
+                    </span>
+                    <h3 className="text-base font-display font-bold text-slate-900">
+                      Full apartment fumigation packs
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Price tier grid */}
+        <div className="text-center space-y-3 max-w-2xl mx-auto pt-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-pill text-xs font-bold text-amber-600 uppercase tracking-widest">
+            <Zap className="w-3.5 h-3.5 text-red-500" />
+            <span>Choose Your Pack</span>
+          </div>
+          <h3 className="text-2xl sm:text-3xl font-display font-bold text-slate-900 tracking-tight">
+            BUY 1, 2, 3 OR 5 BOTTLES — THE PRICE DROPS AS YOU GO
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+          {BUNDLES.map((bundle) => (
+            <BundleCard
+              key={bundle.id}
+              bundle={bundle}
+              onOrder={(b) => onOpenOrderModal(INSTANT_KILLER_PRODUCT_ID, b.bottles)}
               onLocateStore={() => onNavigate('/locations')}
             />
           ))}
@@ -221,12 +416,12 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {/* Banner 1 */}
+          {/* Banner 1 — new official hero artwork */}
           <div className="group relative rounded-3xl overflow-hidden border border-brand bg-white/90 shadow-2xl hover:border-brand transition-all duration-300 flex flex-col justify-between">
-            <div className="w-full relative overflow-hidden bg-slate-100 flex items-center justify-center">
+            <div className="w-full relative overflow-hidden bg-slate-50 flex items-center justify-center">
               <img
-                src="https://i.ibb.co/gFtmPNLB/Lesekese-banners-1.jpg"
-                alt="LESEKESE Formula Banner 1"
+                src={HERO_IMAGE_URL}
+                alt="Buy LESEKESE Bedbugs and Cockroaches Instant Killer 500ml"
                 referrerPolicy="no-referrer"
                 className="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-500 block"
               />
@@ -243,27 +438,8 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             </div>
           </div>
 
-          {/* Banner 2 */}
-          <div className="group relative rounded-3xl overflow-hidden border border-brand bg-white/90 shadow-2xl hover:border-brand transition-all duration-300 flex flex-col justify-between">
-            <div className="w-full relative overflow-hidden bg-slate-100 flex items-center justify-center">
-              <img
-                src="https://i.ibb.co/kWsG7Lt/Lesekese-banners.jpg"
-                alt="LESEKESE Formula Banner 2"
-                referrerPolicy="no-referrer"
-                className="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-500 block"
-              />
-            </div>
-            <div className="p-4 sm:p-5 bg-gradient-to-t from-white via-white/95 to-transparent border-t border-slate-100 flex items-center justify-between gap-2">
-              <div>
-                <span className="text-[11px] font-accent font-bold uppercase tracking-widest text-red-600">
-                  Long-Lasting Residual Protection
-                </span>
-                <h3 className="text-base sm:text-lg font-display font-bold text-slate-900">
-                  Complete Household & Commercial Defense
-                </h3>
-              </div>
-            </div>
-          </div>
+          {/* Video 1 — product reel, played in-page */}
+          <ActionVideoCard />
         </div>
       </section>
 
@@ -275,8 +451,8 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             {/* Image Showcase */}
             <div className="lg:col-span-5 relative group rounded-2xl overflow-hidden border border-brand shadow-xl">
               <img
-                src="https://i.ibb.co/9m1PXhGw/Lesekese-1.jpg"
-                alt="LESEKESE Distributor Products"
+                src={DISTRIBUTOR_SECTION_IMAGE}
+                alt="LESEKESE Instant Killer 500ml available at distributors and stores across Nigeria"
                 referrerPolicy="no-referrer"
                 className="w-full h-64 sm:h-80 lg:h-96 object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
@@ -400,7 +576,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
           {/* Image (shown in full, not cropped) */}
           <div className="relative bg-slate-100 flex items-center justify-center">
             <img
-              src="https://i.ibb.co/gbH2yzrP/Lesekese-banners-3.jpg"
+              src={EARN_SECTION_IMAGE}
               alt="Join the LESEKESE family and earn as a distributor"
               loading="lazy"
               className="w-full h-auto object-contain p-4 sm:p-8"
@@ -494,7 +670,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             {
               name: 'Dr. (Mrs) Chidimma N.',
               role: 'Homeowner, Surulere',
-              text: 'I bought the 250ml size at Abule Egba market. Sprayed my bed frames and mattress joints. Cockroaches and bedbugs dropped immediately. Very effective formula.'
+              text: 'I bought the 2-bottle Family pack at Fagba market. Sprayed my bed frames and mattress joints. Cockroaches and bedbugs dropped immediately. Very effective formula, and it worked out to ₦7,500 per bottle.'
             },
             {
               name: 'Mallam Ibrahim B.',
@@ -532,7 +708,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             </p>
             <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 pt-4">
               <button
-                onClick={() => onOpenOrderModal(500)}
+                onClick={() => onOpenOrderModal(INSTANT_KILLER_PRODUCT_ID, activeBundle.bottles)}
                 className="py-4 px-8 rounded-2xl bg-gradient-to-r from-red-600 to-amber-500 text-white font-accent font-bold text-sm uppercase tracking-wider shadow-lg shadow-red-600/30 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
               >
                 Order Direct Now
@@ -547,12 +723,12 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
             </div>
           </div>
 
-          <div className="relative bg-slate-100 flex items-center justify-center min-h-[240px] lg:min-h-full">
-            <img
-              src="https://i.ibb.co/tpCFTmL0/Lesekese-banners-6.jpg"
-              alt="LESEKESE instant killer spray for bedbugs and cockroaches"
-              loading="lazy"
-              className="w-full h-auto object-contain p-4 sm:p-8"
+          <div className="relative flex items-center justify-center p-4 sm:p-6 bg-slate-50">
+            <VideoPlayer
+              src={GOODBYE_VIDEO_URL}
+              poster={GOODBYE_VIDEO_POSTER}
+              title={instantKiller.name}
+              badge="Video"
             />
           </div>
         </div>
@@ -649,7 +825,7 @@ export function HomePage({ onNavigate, onOpenOrderModal }: HomePageProps) {
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <button
-                  onClick={() => onOpenOrderModal()}
+                  onClick={() => onOpenOrderModal(SEND_OFF_PRODUCT_ID, 1)}
                   className="py-4 px-8 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 text-white font-accent font-bold text-sm uppercase tracking-wider shadow-xl shadow-emerald-600/30 hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>🛒</span>

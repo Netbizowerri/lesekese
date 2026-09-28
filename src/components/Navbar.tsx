@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, PhoneCall, ShoppingBag, MapPin, ShieldAlert, ChevronRight, Store } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { LOGO_IMAGE_URL } from '../data/mockData';
+import { LOGO_IMAGE_URL, INSTANT_KILLER_PRODUCT_ID } from '../data/mockData';
 
 interface NavbarProps {
   currentPath: string;
   onNavigate: (path: string) => void;
-  onOpenOrderModal?: (productSize?: number) => void;
+  onOpenOrderModal?: (productId?: string, bottleCount?: number) => void;
+  /** Opens the "Order Now" form (posts to Formspree). */
+  onOpenOrderForm?: (productId?: string, bottleCount?: number) => void;
 }
 
-export function Navbar({ currentPath, onNavigate, onOpenOrderModal }: NavbarProps) {
+export function Navbar({ currentPath, onNavigate, onOpenOrderModal, onOpenOrderForm }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -26,6 +28,7 @@ export function Navbar({ currentPath, onNavigate, onOpenOrderModal }: NavbarProp
     { label: 'Products', path: '/products' },
     { label: 'How It Works', path: '/how-it-works' },
     { label: 'Distributor Locator', path: '/locations' },
+    { label: 'Blog', path: '/blog' },
     { label: 'Contact & Orders', path: '/contact' }
   ];
 
@@ -84,7 +87,7 @@ export function Navbar({ currentPath, onNavigate, onOpenOrderModal }: NavbarProp
           </a>
 
           <button
-            onClick={() => onOpenOrderModal ? onOpenOrderModal(500) : handleNavClick('/contact')}
+            onClick={() => onOpenOrderForm ? onOpenOrderForm(INSTANT_KILLER_PRODUCT_ID, 2) : handleNavClick('/contact')}
             className="flex items-center gap-2 px-4.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white text-sm font-bold shadow-lg shadow-red-600/30 hover:brightness-110 hover:shadow-red-600/50 active:scale-95 transition-all cursor-pointer"
           >
             <ShoppingBag className="w-4 h-4" />
@@ -95,7 +98,7 @@ export function Navbar({ currentPath, onNavigate, onOpenOrderModal }: NavbarProp
         {/* Mobile Header Controls */}
         <div className="flex md:hidden items-center gap-3.5 sm:gap-4">
           <button
-            onClick={() => onOpenOrderModal ? onOpenOrderModal(500) : handleNavClick('/contact')}
+            onClick={() => onOpenOrderForm ? onOpenOrderForm(INSTANT_KILLER_PRODUCT_ID, 2) : handleNavClick('/contact')}
             className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-red-600/20 active:scale-95 transition-all cursor-pointer"
           >
             <ShoppingBag className="w-3.5 h-3.5" />

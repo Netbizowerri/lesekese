@@ -1,9 +1,10 @@
 import { MapLocator } from '../components/MapLocator';
 import { Building2, Flame, MapPin, PhoneCall, ShieldCheck } from 'lucide-react';
+import { INSTANT_KILLER_PRODUCT_ID } from '../data/mockData';
 
 interface LocationsPageProps {
   onNavigate: (path: string) => void;
-  onOpenOrderModal: (sizeMl?: number) => void;
+  onOpenOrderModal: (productId?: string, bottleCount?: number) => void;
 }
 
 export function LocationsPage({ onNavigate, onOpenOrderModal }: LocationsPageProps) {
@@ -53,7 +54,7 @@ export function LocationsPage({ onNavigate, onOpenOrderModal }: LocationsPagePro
 
         <div className="lg:col-span-4 flex flex-col items-center justify-center space-y-3">
           <button
-            onClick={() => onOpenOrderModal(500)}
+            onClick={() => onOpenOrderModal(INSTANT_KILLER_PRODUCT_ID, 2)}
             className="w-full py-3.5 px-6 rounded-xl bg-white text-red-600 font-accent font-bold text-xs uppercase tracking-wider shadow-lg hover:brightness-110 cursor-pointer"
           >
             Order Direct From Abule Egba HQ

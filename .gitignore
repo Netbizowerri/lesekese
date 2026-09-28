@@ -5,5 +5,24 @@ coverage/
 .DS_Store
 *.log
 *.zip
+# Secrets. .env holds the Supabase publishable key; never commit it.
 .env*
 !.env.example
+
+# Playwright output. Screenshots and error-context.md can capture page
+# content and local paths, so keep them out of the repo entirely.
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Local bootstrap SQL. Contains the admin allowlist email, which is
+# operational data rather than schema, so it must not be committed.
+supabase/*.local.sql
+
+# Supabase CLI scratch directory (project ref, temp files).
+supabase/.temp/
+
+# Local video source footage (large binaries; the optimised copies that
+# ship to the site live in public/video/).
+VIDEO/

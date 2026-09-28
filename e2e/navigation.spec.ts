@@ -2,11 +2,13 @@ import { test, expect } from '@playwright/test';
 
 const ROUTES = [
   { path: '/', heading: /TOUGHER THAN PESTS/i },
-  { path: '/products', heading: /FAST-ACTING PEST KILLER SIZES/i },
+  { path: '/products', heading: /ONE 500ML SIZE/i },
   { path: '/how-it-works', heading: /HOW LESEKESE ERADICATES PESTS/i },
   { path: '/locations', heading: /FIND LESEKESE NEAR YOU/i },
   { path: '/contact', heading: /CONTACT & BULK ORDER INQUIRIES/i },
-  { path: '/admin', heading: /LESEKESE Admin Login/i },
+  // Unconfigured Supabase renders the empty state instead of the index grid.
+  // The page queries Supabase, so allow for a cold network round trip.
+  { path: '/blog', heading: /Pest control, done right|No posts published yet/i, timeout: 20_000 },
   { path: '/privacy', heading: /PRIVACY POLICY/i },
   { path: '/terms', heading: /TERMS OF SERVICE/i },
   { path: '/safety', heading: /MATERIAL SAFETY DATA SHEET/i },
@@ -14,10 +16,12 @@ const ROUTES = [
 ];
 
 test.describe('Public route navigation (direct load)', () => {
-  for (const { path, heading } of ROUTES) {
+  for (const { path, heading, timeout } of ROUTES) {
     test(`${path} loads and shows its primary heading`, async ({ page }) => {
       await page.goto(path);
-      await expect(page.locator('h1, h2').filter({ hasText: heading }).first()).toBeVisible();
+      await expect(page.locator('h1, h2').filter({ hasText: heading }).first()).toBeVisible({
+        timeout,
+      });
       await expect(page).not.toHaveTitle('');
     });
   }
@@ -29,7 +33,7 @@ test.describe('Client-side navigation via navbar', () => {
 
     await page.getByRole('button', { name: /Products/i }).first().click();
     await expect(page).toHaveURL(/\/products$/);
-    await expect(page.locator('h1').filter({ hasText: /FAST-ACTING/i })).toBeVisible();
+    await expect(page.locator('h1').filter({ hasText: /ONE 500ML SIZE/i })).toBeVisible();
 
     await page.getByRole('button', { name: /How It Works/i }).first().click();
     await expect(page).toHaveURL(/\/how-it-works$/);

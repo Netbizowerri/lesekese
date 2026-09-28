@@ -199,50 +199,38 @@ export function MapLocator({ onSelectStoreForOrder }: MapLocatorProps) {
               {/* In-Stock Status Indicators */}
               <div>
                 <span className="text-[11px] font-accent font-bold uppercase tracking-wider text-slate-500 block mb-2">
-                  Live Product Size Availability:
+                  Live Product Availability:
                 </span>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  <div className="glass-pill p-2 rounded-xl text-center text-xs">
-                    <span className="block text-[10px] text-slate-500">500ml Big</span>
-                    {selectedStore.stockAvailable.ml500 ? (
-                      <span className="text-emerald-600 font-bold flex items-center justify-center gap-1 mt-0.5">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="glass-pill p-2.5 rounded-xl text-center text-xs border border-brand/30">
+                    <span className="block text-[10px] text-slate-500">
+                      Instant Killer 500ml
+                    </span>
+                    <span className="block text-[10px] text-slate-400">
+                      Starter ₦10,000 · Family ₦15,000 · Full House ₦20,000 · Landlord ₦25,000
+                    </span>
+                    {selectedStore.stockAvailable.instantKiller ? (
+                      <span className="text-emerald-700 font-bold flex items-center justify-center gap-1 mt-1">
                         <CheckCircle2 className="w-3 h-3" /> In Stock
                       </span>
                     ) : (
-                      <span className="text-red-600 font-bold mt-0.5">Out of Stock</span>
+                      <span className="text-red-600 font-bold mt-1">Out of Stock</span>
                     )}
                   </div>
 
-                  <div className="glass-pill p-2 rounded-xl text-center text-xs">
-                    <span className="block text-[10px] text-slate-500">250ml Medium</span>
-                    {selectedStore.stockAvailable.ml250 ? (
-                      <span className="text-emerald-600 font-bold flex items-center justify-center gap-1 mt-0.5">
-                        <CheckCircle2 className="w-3 h-3" /> In Stock
-                      </span>
-                    ) : (
-                      <span className="text-red-600 font-bold mt-0.5">Out of Stock</span>
-                    )}
-                  </div>
-
-                  <div className="glass-pill p-2 rounded-xl text-center text-xs">
-                    <span className="block text-[10px] text-slate-500">100ml Small</span>
-                    {selectedStore.stockAvailable.ml100 ? (
-                      <span className="text-emerald-600 font-bold flex items-center justify-center gap-1 mt-0.5">
-                        <CheckCircle2 className="w-3 h-3" /> In Stock
-                      </span>
-                    ) : (
-                      <span className="text-amber-600 font-bold mt-0.5">Restocking</span>
-                    )}
-                  </div>
-
-                  <div className="glass-pill p-2 rounded-xl text-center text-xs border border-emerald-200/60">
-                    <span className="block text-[10px] text-emerald-700 font-semibold">SEND OFF 🐍</span>
+                  <div className="glass-pill p-2.5 rounded-xl text-center text-xs border border-emerald-200/60">
+                    <span className="block text-[10px] text-emerald-700 font-semibold">
+                      SEND OFF 250g · ₦6,000
+                    </span>
+                    <span className="block text-[10px] text-slate-400">
+                      Snakes &amp; Scorpions Repellent
+                    </span>
                     {selectedStore.stockAvailable.sendOff ? (
-                      <span className="text-emerald-600 font-bold flex items-center justify-center gap-1 mt-0.5">
+                      <span className="text-emerald-700 font-bold flex items-center justify-center gap-1 mt-1">
                         <CheckCircle2 className="w-3 h-3" /> In Stock
                       </span>
                     ) : (
-                      <span className="text-amber-600 font-bold mt-0.5">Restocking</span>
+                      <span className="text-amber-600 font-bold mt-1">Restocking</span>
                     )}
                   </div>
                 </div>
